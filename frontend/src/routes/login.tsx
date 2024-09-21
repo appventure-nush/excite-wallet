@@ -1,9 +1,6 @@
-import Container from "@mui/material/Container";
-import Header from "../components/header";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-
+import { Button, Container, Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import Header from "../components/header";
 
 export default function LoginPage() {
   return (
@@ -17,7 +14,9 @@ export default function LoginPage() {
           alignItems: "center",
         }}
       >
-        <Link to={"/student"}><Button variant="contained">Go to Student</Button></Link>
+        <Link to={"/student"}>
+          <Button variant="contained">Go to Student</Button>
+        </Link>
         {/* Your code here! */}
       </Stack>
     </Container>

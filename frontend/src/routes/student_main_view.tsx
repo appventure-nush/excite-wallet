@@ -1,7 +1,6 @@
-import Container from "@mui/material/Container";
+import { Button, Container, Stack, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import Header from "../components/header";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
 
 export default function StudentMainPage() {
   return (
