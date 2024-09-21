@@ -17,11 +17,17 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 import App from './App';
+import LoginPage from './routes/login'
+import StudentMainPage from './routes/student_main_view'
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <LoginPage />,
+  },
+  {
+    path: "/student",
+    element: <StudentMainPage />,
   },
 ]);
 
