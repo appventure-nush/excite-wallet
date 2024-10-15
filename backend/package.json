@@ -1,0 +1,42 @@
+{
+    "name": "backend",
+    "version": "0.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "type": "module",
+    "scripts": {
+        "start": "node dist/index.js",
+        "typia": "bunx typia generate --input src/ --output generated/ --project tsconfig.json",
+        "build": "bun build --target node src/index.ts --outdir dist",
+        "lint": "eslint . --fix",
+        "typecheck": "tsc --noemit",
+        "format": "prettier --write .",
+        "precommit": "bun run format && bun run lint && bun run typecheck"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/compression": "^1.7.5",
+        "@types/connect-memcached": "^1.0.3",
+        "@types/cors": "^2.8.17",
+        "@types/express": "^4.17.21",
+        "@types/express-session": "^1.18.0",
+        "@types/passport-local": "^1.0.38",
+        "eslint": "^9.12.0",
+        "typescript": "~5.5.4",
+        "typescript-eslint": "^8.9.0"
+    },
+    "dependencies": {
+        "compression": "^1.7.4",
+        "connect-memcached": "^2.0.0",
+        "cors": "^2.8.5",
+        "decimal.js": "^10.4.3",
+        "express": "^4.21.1",
+        "express-session": "^1.18.1",
+        "helmet": "^7.2.0",
+        "passport": "^0.7.0",
+        "passport-local": "^1.0.0",
+        "postgres": "^3.4.4"
+    }
+}

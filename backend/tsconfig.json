@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "ESNext",
+        "lib": ["ESNext"],
+        "esModuleInterop": true,
+        "target": "ES6",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "baseUrl": "src",
+        "strict": true,
+        "skipLibCheck": true
+    },
+    "include": ["src/**/*.ts", "src/**/*.d.ts"]
+}
