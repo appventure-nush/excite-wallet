@@ -20,6 +20,8 @@ import LoginPage from './routes/login'
 import StudentMainPage from './routes/student_main_view'
 import StudentTopupPage from './routes/student_topup'
 import StudentPaymentPage from './routes/student_payment_view'
+import BoothMainPage from './routes/booth_main_view'
+import BoothConfirmPaymentPage from './routes/booth_confirm_payment_view'
 
 const router = createBrowserRouter([
   {
@@ -38,6 +40,14 @@ const router = createBrowserRouter([
     path: "/student/payment",
     element: <StudentPaymentPage />,
   },
+  {
+    path: "/booth",
+    element: <BoothMainPage />,
+  },
+  {
+    path: "/booth/payment",
+    element: <BoothConfirmPaymentPage />,
+  }
 ]);
 
 createRoot(document.getElementById('root')!).render(
