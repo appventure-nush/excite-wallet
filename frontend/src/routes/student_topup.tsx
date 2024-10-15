@@ -12,6 +12,7 @@ export default function StudentTopupPage() {
         sx={{
           justifyContent: "center",
           alignItems: "center",
+          mb: 4,
         }}
       >
         <Typography variant="h6">Top-up QR Code</Typography>

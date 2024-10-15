@@ -19,6 +19,7 @@ import '@fontsource/roboto/700.css';
 import LoginPage from './routes/login'
 import StudentMainPage from './routes/student_main_view'
 import StudentTopupPage from './routes/student_topup'
+import StudentPaymentPage from './routes/student_payment_view'
 
 const router = createBrowserRouter([
   {
@@ -32,7 +33,11 @@ const router = createBrowserRouter([
   {
     path: "/student/topup",
     element: <StudentTopupPage />,
-  }
+  },
+  {
+    path: "/student/payment",
+    element: <StudentPaymentPage />,
+  },
 ]);
 
 createRoot(document.getElementById('root')!).render(
