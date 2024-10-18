@@ -23,7 +23,7 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#00a499',
+      main: '#00A39C',
     },
     secondary: {
       main: '#333f48',
@@ -48,6 +48,15 @@ const theme = createTheme({
                 fontSize: "1.2rem",
                 textAlign: "center",
                 color: "#30d4c9", // find a way to fix this
+              } 
+            },
+            {
+              props: { variant: 'h3' },
+              style: {
+                fontSize: "4rem",
+                fontWeight: "bold",
+                textAlign: "center",
+                color: "#00A39C", // find a way to fix this
               } 
             }
           ]
