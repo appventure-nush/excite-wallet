@@ -26,7 +26,7 @@ router.post("/login/password", (req, res) => {
                 return res.status(200).json({ message: "Logged in" })
             })
         },
-    )
+    )(req, res)
 })
 
 router.post("/logout", (req, res) => {
