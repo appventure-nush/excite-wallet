@@ -9,9 +9,9 @@ declare global {
 }
 
 export enum UserType {
-    BOOTH,
-    STUDENT,
-    ADMIN,
+    BOOTH = "booth",
+    STUDENT = "student",
+    ADMIN = "admin",
 }
 
 export interface UserTable {
@@ -24,9 +24,9 @@ export interface UserTable {
     is_booth: boolean // BOOLEAN
 }
 
-export interface IUserDetails {
+export type UserDetails = {
     username: string
     name: string
-    balance: number
+    balance: string
     type: UserType
 }

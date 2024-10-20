@@ -7,13 +7,14 @@ import { TransactionTable } from "types/transaction"
 import { UserType } from "types/user"
 
 const router = Router()
-router.use((req, res) => {
+router.use((req, res, next) => {
     if (!req.isAuthenticated()) {
         return res.status(401).json({ message: "Unauthorized" })
     }
     if (req.user.type !== UserType.STUDENT) {
         return res.status(403).json({ message: "Forbidden" })
     }
+    next()
 })
 
 router.post("/createTransaction", async (req, res) => {
@@ -112,6 +113,12 @@ router.post("/cancelTransaction", async (req, res) => {
 router.post("/createToken", async (req, res) => {
     // create a topup token
     const topupId = getRandom()
+
+    // if a topup token already exists for the specific user, delete it
+    await sql`
+        DELETE FROM Topup
+        WHERE student_uid = ${req.user!.uid} AND admin_uid IS NULL
+    `
 
     const topup: TopupTable = {
         topup_id: topupId,

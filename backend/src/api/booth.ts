@@ -4,13 +4,14 @@ import { TransactionTable } from "types/transaction"
 import { UserType } from "types/user"
 
 const router = Router()
-router.use((req, res) => {
+router.use((req, res, next) => {
     if (!req.isAuthenticated()) {
         return res.status(401).json({ message: "Unauthorized" })
     }
     if (req.user.type !== UserType.ADMIN) {
         return res.status(403).json({ message: "Forbidden" })
     }
+    next()
 })
 
 router.post("/collectTransaction", async (req, res) => {
@@ -44,6 +45,16 @@ router.post("/collectTransaction", async (req, res) => {
             return res
                 .status(400)
                 .json({ message: "Transaction already completed" })
+        }
+
+        // check if transaction is expired
+        const startTimestamp = transactionRow.start_timestamp
+        const currentTimestamp = new Date()
+        const diff = currentTimestamp.getTime() - startTimestamp.getTime()
+        if (diff > 1000 * 60 * 5) { // 5 minutes
+            // delete transaction
+            await sql`DELETE FROM Transactions WHERE transaction_id = ${transId}`
+            return res.status(400).json({ message: "Transaction expired" })
         }
 
         // update transaction

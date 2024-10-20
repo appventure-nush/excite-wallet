@@ -1,5 +1,8 @@
+import { sql } from "db"
 import { Router } from "express"
-import passport from "passport"
+import passport, { use } from "passport"
+import { UserDetails, UserTable, UserType } from "types/user"
+import { getUser } from "utils"
 
 const router = Router()
 
@@ -29,13 +32,18 @@ router.post("/login/password", (req, res) => {
     )(req, res)
 })
 
-router.post("/logout", (req, res) => {
+router.get("/logout", (req, res) => {
     req.logout((err) => {
         if (err) {
             return res.status(500).json({ message: "Internal Server Error" })
         }
         return res.status(200).json({ message: "Logged out" })
     })
+})
+
+router.get("/:id", async (req, res) => {
+    const userId = req.params.id
+    res.json(await getUser(userId))
 })
 
 export default router

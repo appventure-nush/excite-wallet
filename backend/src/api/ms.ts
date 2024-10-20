@@ -11,14 +11,11 @@ router.get(
     }),
 )
 
-router.post("/callback", (req, res) => {
-    passport.authenticate("microsoft", (err: unknown) => {
-        console.log(err)
-        if (err) {
-            return res.status(500).json(err)
-        }
-        res.redirect(settings.HOMEPAGE_URL)
-    })(req, res)
+router.post("/callback",
+    passport.authenticate("microsoft"), 
+    (req, res) => {
+
+    res.redirect(settings.HOMEPAGE_URL)
 })
 
 export default router

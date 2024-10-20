@@ -75,8 +75,6 @@ passport.use(
             passReqToCallback: false,
             responseType: "id_token",
             responseMode: "form_post",
-            loggingLevel: "info",
-            loggingNoPII: false,
         },
         async (profile: IProfile, done: VerifyCallback) => {
             const displayName = profile.displayName!

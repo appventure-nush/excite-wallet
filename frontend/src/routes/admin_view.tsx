@@ -8,7 +8,6 @@ import {
   Divider,
   Box,
 } from "@mui/material";
-import { Link } from "react-router-dom";
 import Header from "../components/header";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import { useState } from "react";

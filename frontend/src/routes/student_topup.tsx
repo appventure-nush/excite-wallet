@@ -1,8 +1,43 @@
 import { Button, Container, Stack, Typography, Divider } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/header";
+import { useState, useEffect } from "react";
+import { getTopupToken, getUser } from "../api";
+import { UserDetails, UserType } from "../types/user";
+import QRCode from "react-qr-code";
+import { TopupToken } from "../types/topup";
 
 export default function StudentTopupPage() {
+  const navigate = useNavigate();
+  const [user, setUser] = useState<UserDetails | null>(null);
+  const [token, setToken] = useState<TopupToken | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      const user = await getUser()
+      if (user === null) {
+        return navigate("/");
+      }
+      if (user.type === UserType.STUDENT) {
+        setUser(user);
+        const token = await getTopupToken();
+        if (token === null) {
+          return;
+        }
+        setToken(token);
+        return;
+      } else if (user.type === UserType.ADMIN) {
+        navigate("/admin");
+      } else if (user.type === UserType.BOOTH) {
+        navigate("/booth");
+      }
+    })()
+  }, [])
+
+  if (user === null || token === null) {
+    return <></>;
+  }
+
   return (
     <Container maxWidth="sm">
       <Header />
@@ -16,11 +51,7 @@ export default function StudentTopupPage() {
         }}
       >
         <Typography variant="h6">Top-up QR Code</Typography>
-        <img
-          className="qrcode"
-          src="https://www.ncsc.gov.uk/images/QR-IMAGE.png"
-          alt="QR Code"
-        />
+        <QRCode value={token.topup_id} />
         <Typography variant="h6">How do I top-up?</Typography>
         <Typography variant="body1">
           Show this QR code to the EXCITE admin booth, and pay them the money.
