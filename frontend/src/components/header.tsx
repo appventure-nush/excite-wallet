@@ -1,5 +1,5 @@
 import { Button, Stack, Typography } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { logout } from "../api";
 
 export default function Header() {

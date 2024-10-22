@@ -13,7 +13,7 @@ import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addMoney, getTopup, getUser } from "../api";
-import { UserDetails, UserType } from "../types/user";
+import { UserType } from "../types/user";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { TopupDetails } from "../types/topup";
 import Decimal from "decimal.js";
@@ -23,7 +23,6 @@ export default function AdminPage() {
   const [showScanner, setShowScanner] = useState(false);
 
   const navigate = useNavigate();
-  const [user, setUser] = useState<UserDetails | null>(null);
   const amount = useRef("");
 
   useEffect(() => {
@@ -35,7 +34,6 @@ export default function AdminPage() {
       if (user.type === UserType.STUDENT) {
         navigate("/student");
       } else if (user.type === UserType.ADMIN) {
-        setUser(user);
         return;
       } else if (user.type === UserType.BOOTH) {
         navigate("/booth");

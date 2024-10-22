@@ -4,10 +4,10 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from "../components/header";
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { getUser } from "../api";
 import { UserDetails, UserType } from "../types/user";
 import { Scanner } from '@yudiel/react-qr-scanner';
