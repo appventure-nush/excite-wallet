@@ -3,7 +3,7 @@ export type TopupToken = {
 }
 
 export type TopupDetails = {
-    topup_id: string
+    token_id: string
     student_uid: string
     student_name: string
 }
