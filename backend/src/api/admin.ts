@@ -16,7 +16,7 @@ router.use((req, res, next) => {
 })
 
 router.get("/getTopup", async (req, res) => {
-    const tokenId: unknown = req.body.token_id
+    const tokenId: unknown = req.query.token_id
 
     if (!tokenId) {
         return res.status(400).json({ message: "Token ID is required" })
