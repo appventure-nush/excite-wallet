@@ -42,9 +42,9 @@ router.get("/getTopup", async (req, res) => {
     }
 
     return res.json({
-        token_id: topupRow.token_id,
+        token_id: topupRow.topup_id,
         student_uid: topupRow.student_uid,
-        student_name: topupRow.student_username
+        student_name: topupRow.student_name
     })
 })
 
@@ -88,7 +88,7 @@ router.post("/addMoney", async (req, res) => {
 
         // update topup data
         topupRow.admin_uid = req.user!.uid
-        topupRow.admin_username = req.user!.username
+        topupRow.admin_name = req.user!.name
         topupRow.amount = amountToDP.toFixed(2)
 
         await sql`

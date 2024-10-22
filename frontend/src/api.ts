@@ -1,7 +1,7 @@
 import axios from "axios";
 import { settings } from "./settings";
 import { UserDetails } from "./types/user";
-import { TopupToken } from "./types/topup";
+import { TopupDetails, TopupToken } from "./types/topup";
 import { TransactionDetails, TransactionToken } from "./types/transaction";
 
 const fetcher = axios.create({
@@ -70,6 +70,52 @@ export async function collectTransaction(transId: string): Promise<boolean> {
     try {
         await fetcher.post("/booth/collectTransaction", {
             transId,
+        });
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+export async function login(username: string, password: string): Promise<boolean> {
+    try {
+        await fetcher.post("/user/login/password", {
+            username,
+            password,
+        });
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+export async function logout(): Promise<boolean> {
+    try {
+        await fetcher.get("/user/logout");
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+export async function getTopup(tokenId: string): Promise<TopupDetails | null> {
+    try {
+    const resp = await fetcher.get("/admin/getTopup", {
+        params: {
+            tokenId,
+        },
+    });
+    return resp.data as TopupDetails;
+} catch (error) {
+    return null;
+}
+}
+
+export async function addMoney(tokenId: string, amount: string): Promise<boolean> {
+    try {
+        await fetcher.post("/admin/addMoney", {
+            tokenId,
+            amount,
         });
         return true;
     } catch (error) {

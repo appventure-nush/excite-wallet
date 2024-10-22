@@ -3,6 +3,7 @@ declare global {
         interface User {
             uid: string
             username: string
+            name: string
             type: UserType
         }
     }

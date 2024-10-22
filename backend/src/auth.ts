@@ -19,7 +19,7 @@ passport.use(
             let res
             try {
                 res = await sql<UserTable[]>`
-                    SELECT uid, is_admin, is_booth FROM Users WHERE username = ${username}
+                    SELECT * FROM Users WHERE username = ${username}
                 `
             } catch (error) {
                 return callback(error)
@@ -53,6 +53,7 @@ passport.use(
             return callback(null, {
                 uid: row.uid,
                 username,
+                name: row.name,
                 type: row.is_admin
                     ? UserType.ADMIN
                     : row.is_booth
@@ -109,6 +110,7 @@ passport.use(
 
                 return done(null, {
                     uid: user.uid,
+                    name: user.name,
                     username: user.username,
                     type: UserType.STUDENT,
                 })
@@ -126,6 +128,7 @@ passport.use(
             return done(null, {
                 uid: row.uid,
                 username: displayName,
+                name: displayName,
                 type: row.is_admin
                     ? UserType.ADMIN
                     : row.is_booth
@@ -141,6 +144,7 @@ passport.serializeUser<Express.User>(function (user, cb) {
         cb(null, {
             uid: user.uid,
             username: user.username,
+            name: user.name,
             type: user.type,
         })
     })

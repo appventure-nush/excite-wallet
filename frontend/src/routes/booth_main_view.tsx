@@ -10,10 +10,12 @@ import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import { useState, useRef, useEffect } from "react";
 import { getUser } from "../api";
 import { UserDetails, UserType } from "../types/user";
+import { Scanner } from '@yudiel/react-qr-scanner';
 
 export default function BoothMainPage() {
   const navigate = useNavigate();
   const [user, setUser] = useState<UserDetails | null>(null);
+  const [showScanner, setShowScanner] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -50,12 +52,10 @@ export default function BoothMainPage() {
         <Typography variant="body1">Booth: {user.name}</Typography>
         <Typography variant="h6">Your balance:</Typography>
         <Typography variant="h3">${user.balance}</Typography>
-        <img
-                className="qrcode"
-                src="https://i.kym-cdn.com/photos/images/newsfeed/001/519/479/30c.jpg"
-                alt="Scanning page idk how youre gonna implement this good luck :D"
-            />
-        <Link to={"/booth/payment"}><Button variant="contained" size="large" startIcon={<QrCodeScannerIcon />}>Scan Student's QR Code</Button></Link>
+        <Button variant="contained" size="large" startIcon={!showScanner && <QrCodeScannerIcon />} onClick={() => setShowScanner((s) => !s)}>{showScanner ? "Stop Scanning" : "Scan Student's QR Code"}</Button>
+        {showScanner && <Scanner onScan={(code) => {
+          navigate("/booth/payment", {state: {transId: code[0].rawValue}})
+        }} classNames={{container: "scanner-container"}} />}
       </Stack>
     </Container>
   );

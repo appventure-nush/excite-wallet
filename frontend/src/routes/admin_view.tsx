@@ -10,16 +10,21 @@ import {
 } from "@mui/material";
 import Header from "../components/header";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUser } from "../api";
+import { addMoney, getTopup, getUser } from "../api";
 import { UserDetails, UserType } from "../types/user";
+import { Scanner } from "@yudiel/react-qr-scanner";
+import { TopupDetails } from "../types/topup";
+import Decimal from "decimal.js";
 
 export default function AdminPage() {
-  const [topupId, setTopupId] = useState("");
+  const [topup, setTopup] = useState<TopupDetails | null>(null);
+  const [showScanner, setShowScanner] = useState(false);
 
   const navigate = useNavigate();
   const [user, setUser] = useState<UserDetails | null>(null);
+  const amount = useRef("");
 
   useEffect(() => {
     (async () => {
@@ -50,17 +55,19 @@ export default function AdminPage() {
         }}
       >
         <Typography variant="body1">Administration</Typography>
-        <Button
-          variant="contained"
-          size="large"
-          onClick={() => setTopupId("a")}
-          startIcon={<QrCodeScannerIcon />}
-        >
-          Scan Student's QR Code
-        </Button>
+        <Button variant="contained" size="large" startIcon={!showScanner && <QrCodeScannerIcon />} onClick={() => setShowScanner((s) => !s)}>{showScanner ? "Stop Scanning" : "Scan Student's QR Code"}</Button>
+        {showScanner && <Scanner onScan={async (code) => {
+          const resp = await getTopup(code[0].rawValue);
+          if (resp === null) {
+            alert("Failed to fetch topup details");
+            return;
+          }
+          setTopup(resp);
+        }} classNames={{container: "scanner-container"}} />}
+        
         <Divider variant="middle" />
 
-        {topupId ? (
+        {topup ? (
           <Stack
             direction="column"
             spacing={2}
@@ -69,7 +76,7 @@ export default function AdminPage() {
               alignItems: "center",
             }}
           >
-            <Typography variant="h6">Topup STUDENT NAME HERE:</Typography>
+            <Typography variant="h6">Topup {topup.student_name}:</Typography>
             <Typography variant="body1">Balance to be added:</Typography>
             <TextField
               id="student-pay-amount"
@@ -84,12 +91,24 @@ export default function AdminPage() {
                   ),
                 },
               }}
+              onChange={(e) => {amount.current = e.target.value}}
             />
-            <Button variant="contained" size="large">
+            <Button variant="contained" size="large" onClick={async () => {
+              const amt = new Decimal(amount.current).toDP(2);
+              if (amt.lte(0)) {
+                alert("Invalid amount!");
+                return;
+              }
+              const status = await addMoney(topup.topup_id, amt.toString());
+              if (!status) {
+                alert("Failed to add money");
+              }
+              setTopup(null);
+            }}>
               Confirm Top-up
             </Button>
             <Box sx={{ position: "fixed", bottom: "2em" }}>
-              <Button variant="outlined" color="white" onClick={() => setTopupId("")}>
+              <Button variant="outlined" color="white" onClick={() => setTopup(null)}>
                 Cancel
               </Button>
             </Box>

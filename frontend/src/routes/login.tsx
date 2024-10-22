@@ -7,13 +7,15 @@ import {
   TextField,
 } from "@mui/material";
 import MicrosoftIcon from "@mui/icons-material/Microsoft";
-import { getMSLoginUrl, getUser } from "../api";
-import { useEffect } from "react";
+import { getMSLoginUrl, getUser, login } from "../api";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserType } from "../types/user";
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const username = useRef("");
+  const password = useRef("");
 
   useEffect(() => {
     (async () => {
@@ -65,15 +67,25 @@ export default function LoginPage() {
           label="Username"
           variant="filled"
           size="small"
+          onChange={(e) => {username.current = e.target.value}}
         />
         <TextField
           className="login-wide"
           id="login-password"
-          label="Standard"
+          label="Password"
           variant="filled"
           size="small"
+          type="password"
+          onChange={(e) => {password.current = e.target.value}}
         />
-        <Button className="login-wide" variant="contained" size="large">
+        <Button className="login-wide" variant="contained" size="large" onClick={async () => {
+          const resp = await login(username.current, password.current)
+          if (resp) {
+            window.location.reload()
+          } else {
+            alert("Login failed")
+          }
+        }}>
           Login
         </Button>
       </Stack>

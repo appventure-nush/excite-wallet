@@ -6,6 +6,7 @@ WORKDIR /app/
 COPY package.json bun.lockb ./
 RUN bun i --frozen-lockfile
 COPY . .
+RUN touch src/secrets.json
 RUN bun run build
 
 FROM node:lts-alpine AS node

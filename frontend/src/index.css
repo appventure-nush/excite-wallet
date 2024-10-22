@@ -18,3 +18,14 @@
 .login-full {
   width: 100%;
 }
+
+.scanner-container {
+  height: 100%;
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.scanner-container svg {
+  height: 100%;
+  width: 100%;
+}
