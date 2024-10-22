@@ -4,11 +4,38 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/header";
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
+import { useState, useRef, useEffect } from "react";
+import { getUser } from "../api";
+import { UserDetails, UserType } from "../types/user";
 
 export default function BoothMainPage() {
+  const navigate = useNavigate();
+  const [user, setUser] = useState<UserDetails | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      const user = await getUser()
+      if (user === null) {
+        return navigate("/");
+      }
+      if (user.type === UserType.STUDENT) {
+        navigate("/student");
+      } else if (user.type === UserType.ADMIN) {
+        navigate("/admin");
+      } else if (user.type === UserType.BOOTH) {
+        setUser(user);
+        return;
+      }
+    })()
+  }, [])
+
+  if (user === null) {
+    return <></>;
+  }
+
   return (
     <Container maxWidth="sm">
       <Header />
@@ -20,9 +47,9 @@ export default function BoothMainPage() {
           alignItems: "center",
         }}
       >
-        <Typography variant="body1">Booth: BOOTH NAME</Typography>
+        <Typography variant="body1">Booth: {user.name}</Typography>
         <Typography variant="h6">Your balance:</Typography>
-        <Typography variant="h3">$14.34</Typography>
+        <Typography variant="h3">${user.balance}</Typography>
         <img
                 className="qrcode"
                 src="https://i.kym-cdn.com/photos/images/newsfeed/001/519/479/30c.jpg"

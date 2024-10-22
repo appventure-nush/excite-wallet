@@ -14,6 +14,55 @@ router.use((req, res, next) => {
     next()
 })
 
+router.get("/getTransaction", async (req, res) => {
+    const transId: unknown = req.query.transaction_id
+
+    if (!transId) {
+        return res.status(400).json({ message: "Transaction ID is required" })
+    }
+
+    if (typeof transId !== "string") {
+        return res
+            .status(400)
+            .json({ message: "Transaction ID must be a string" })
+    }
+
+    const transaction = await sql<{
+        transaction_id: string
+        status: string
+        amount: string
+        start_timestamp: Date
+        name: string
+    }[]>`
+        SELECT Transaction.transaction_id, Transactions.status, Transactions.amount, Transactions.start_timestamp, Users.name  FROM Transactions INNER JOIN Users ON Users.uid = Transactions.sender_uid WHERE transaction_id = ${transId}
+    `
+
+    if (transaction.length === 0) {
+        return res.status(404).json({ message: "Transaction ID not found" })
+    }
+
+    const transactionRow = transaction[0]
+
+    // check if transaction is already completed
+    if (transactionRow.status === "COMPLETED") {
+        return res
+            .status(400)
+            .json({ message: "Transaction already completed" })
+    }
+
+    // check if transaction is expired
+    const startTimestamp = transactionRow.start_timestamp
+    const currentTimestamp = new Date()
+    const diff = currentTimestamp.getTime() - startTimestamp.getTime()
+    if (diff > 1000 * 60 * 5) { // 5 minutes
+        // delete transaction
+        await sql`DELETE FROM Transactions WHERE transaction_id = ${transId}`
+        return res.status(400).json({ message: "Transaction expired" })
+    }
+
+    return res.json(transactionRow)
+})
+
 router.post("/collectTransaction", async (req, res) => {
     const transId: unknown = req.body.transaction_id
 

@@ -15,6 +15,39 @@ router.use((req, res, next) => {
     next()
 })
 
+router.get("/getTopup", async (req, res) => {
+    const tokenId: unknown = req.body.token_id
+
+    if (!tokenId) {
+        return res.status(400).json({ message: "Token ID is required" })
+    }
+
+    if (typeof tokenId !== "string") {
+        return res.status(400).json({ message: "Token ID must be a number" })
+    }
+
+    // get topup
+    const topup = await sql<TopupTable[]>`
+        SELECT * FROM Topups WHERE token_id = ${tokenId}
+    `
+
+    if (topup.length === 0) {
+        return res.status(404).json({ message: "Token ID not found" })
+    }
+
+    const topupRow = topup[0]
+
+    if (topupRow.admin_uid !== null) {
+        return res.status(400).json({ message: "Token ID already used" })
+    }
+
+    return res.json({
+        token_id: topupRow.token_id,
+        student_uid: topupRow.student_uid,
+        student_name: topupRow.student_username
+    })
+})
+
 router.post("/addMoney", async (req, res) => {
     const tokenId: unknown = req.body.token_id
     const amount: string = req.body.amount
@@ -23,7 +56,7 @@ router.post("/addMoney", async (req, res) => {
         return res.status(400).json({ message: "Token ID is required" })
     }
 
-    if (typeof tokenId !== "number") {
+    if (typeof tokenId !== "string") {
         return res.status(400).json({ message: "Token ID must be a number" })
     }
 

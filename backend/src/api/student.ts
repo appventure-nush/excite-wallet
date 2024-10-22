@@ -123,9 +123,9 @@ router.post("/createToken", async (req, res) => {
     const topup: TopupTable = {
         topup_id: topupId,
         student_uid: req.user!.uid,
-        student_username: req.user!.username,
+        student_name: req.user!.name,
         admin_uid: null,
-        admin_username: null,
+        admin_name: null,
         amount: null,
     }
     await sql`INSERT INTO Topup ${sql(topup)}`

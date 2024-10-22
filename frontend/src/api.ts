@@ -2,7 +2,7 @@ import axios from "axios";
 import { settings } from "./settings";
 import { UserDetails } from "./types/user";
 import { TopupToken } from "./types/topup";
-import { TransactionToken } from "./types/transaction";
+import { TransactionDetails, TransactionToken } from "./types/transaction";
 
 const fetcher = axios.create({
     withCredentials: true,
@@ -44,8 +44,32 @@ export async function getTransactionToken(amount: string): Promise<TransactionTo
 
 export async function cancelTransationToken(transId: string): Promise<boolean> {
     try {
-        const resp = await fetcher.post("/student/cancelTransaction", {
+        await fetcher.post("/student/cancelTransaction", {
             transId
+        });
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+export async function getTransactionDetails(transId: string): Promise<TransactionDetails | null> {
+    try {
+        const resp = await fetcher.get("/booth/getTransaction", {
+            params: {
+                transId,
+            },
+        })
+        return resp.data as TransactionDetails;
+    } catch (error) {
+        return null;
+    }
+}
+
+export async function collectTransaction(transId: string): Promise<boolean> {
+    try {
+        await fetcher.post("/booth/collectTransaction", {
+            transId,
         });
         return true;
     } catch (error) {

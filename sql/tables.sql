@@ -23,8 +23,8 @@ CREATE TABLE Transactions(
 CREATE TABLE Topup(
     topup_id CHAR(36) PRIMARY KEY,
     student_uid CHAR(36) NOT NULL,
-    student_username VARCHAR(255) NOT NULL,
+    student_name VARCHAR(255) NOT NULL,
     admin_uid CHAR(36),
-    admin_username VARCHAR(255),
+    admin_name VARCHAR(255),
     amount DECIMAL(10, 2)
 );

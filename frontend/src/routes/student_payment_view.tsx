@@ -17,11 +17,12 @@ import { TransactionToken } from "../types/transaction";
     const navigate = useNavigate();
     const [user, setUser] = useState<UserDetails | null>(null);
     const [token, setToken] = useState<TransactionToken | null>(null);
-    const amount: string = location.state.amount;
+    const amount: string | undefined = location.state.amount;
 
     useEffect(() => {
       if (!amount) {
         navigate("/student");
+        return;
       }
       (async () => {
         const user = await getUser()
@@ -30,8 +31,9 @@ import { TransactionToken } from "../types/transaction";
         }
         if (user.type === UserType.STUDENT) {
           setUser(user);
-          const token = await getTransactionToken(amount)
+          const token = await getTransactionToken(amount);
           if (token === null) {
+            navigate("/student");
             return;
           }
           setToken(token);
