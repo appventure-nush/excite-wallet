@@ -33,3 +33,9 @@ jobs:
           context: backend
           push: true
           tags: registry.nush.app/excite:backend
+      - name: Push image to AppVenture registry
+        uses: docker/build-push-action@v5
+        with:
+          context: sql
+          push: true
+          tags: registry.nush.app/excite:postgres
