@@ -29,12 +29,13 @@ router.get("/getTransaction", async (req, res) => {
 
     const transaction = await sql<{
         transaction_id: string
+        sender_uid: string
         status: string
         amount: string
         start_timestamp: Date
         name: string
     }[]>`
-        SELECT Transactions.transaction_id, Transactions.status, Transactions.amount, Transactions.start_timestamp, Users.name FROM Transactions INNER JOIN Users ON Users.uid = Transactions.sender_uid WHERE transaction_id = ${transId}
+        SELECT Transactions.transaction_id, Transactions.sender_uid, Transactions.status, Transactions.amount, Transactions.start_timestamp, Users.name FROM Transactions INNER JOIN Users ON Users.uid = Transactions.sender_uid WHERE transaction_id = ${transId}
     `
 
     if (transaction.length === 0) {
@@ -55,8 +56,12 @@ router.get("/getTransaction", async (req, res) => {
     const currentTimestamp = new Date()
     const diff = currentTimestamp.getTime() - startTimestamp.getTime()
     if (diff > 1000 * 60 * 5) { // 5 minutes
-        // delete transaction
-        await sql`DELETE FROM Transactions WHERE transaction_id = ${transId}`
+        await sql.begin("ISOLATION LEVEL REPEATABLE READ", async (sql) => {
+            // delete transaction
+            await sql`DELETE FROM Transactions WHERE transaction_id = ${transId}`
+            // refund balance
+            await sql`UPDATE Users SET balance = balance + ${transactionRow.amount} WHERE uid = ${transactionRow.sender_uid}`
+        })
         return res.status(400).json({ message: "Transaction expired" })
     }
 
@@ -103,6 +108,8 @@ router.post("/collectTransaction", async (req, res) => {
         if (diff > 1000 * 60 * 5) { // 5 minutes
             // delete transaction
             await sql`DELETE FROM Transactions WHERE transaction_id = ${transId}`
+            // refund balance
+            await sql`UPDATE Users SET balance = balance + ${transactionRow.amount} WHERE uid = ${transactionRow.sender_uid}`
             return res.status(400).json({ message: "Transaction expired" })
         }
 
