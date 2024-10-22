@@ -53,13 +53,21 @@ export default function AdminPage() {
         }}
       >
         <Typography variant="body1">Administration</Typography>
-        <Button variant="contained" size="large" startIcon={!showScanner && <QrCodeScannerIcon />} onClick={() => setShowScanner((s) => !s)}>{showScanner ? "Stop Scanning" : "Scan Student's QR Code"}</Button>
+        <Button variant="contained" size="large" startIcon={!showScanner && <QrCodeScannerIcon />} onClick={() => {
+          if (showScanner) {
+            setShowScanner(false);
+          } else {
+            setShowScanner(true);
+            setTopup(null);
+          }
+        }}>{showScanner ? "Stop Scanning" : "Scan Student's QR Code"}</Button>
         {showScanner && <Scanner onScan={async (code) => {
           const resp = await getTopup(code[0].rawValue);
           if (resp === null) {
             alert("Failed to fetch topup details");
             return;
           }
+          setShowScanner(false);
           setTopup(resp);
         }} formats={["qr_code"]} classNames={{container: "scanner-container"}} />}
         
