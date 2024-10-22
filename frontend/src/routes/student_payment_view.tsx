@@ -7,7 +7,7 @@ import {
   import { useLocation, useNavigate } from "react-router-dom";
   import Header from "../components/header";
 import { useState, useEffect } from "react";
-import { cancelTransationToken, getTransactionToken, getUser } from "../api";
+import { getTransactionToken, getUser } from "../api";
 import { UserDetails, UserType } from "../types/user";
 import QRCode from "react-qr-code";
 import { TransactionToken } from "../types/transaction";
@@ -99,11 +99,7 @@ import { TransactionToken } from "../types/transaction";
               Show the booth admin this QR Code. After confirmation, the balance will be deducted from your account.
             </Typography>
           </Stack>
-          <Button variant="outlined" color="white" onClick={async () => {
-            const status = await cancelTransationToken(token.transaction_id);
-            if (!status) {
-              alert("Failed to cancel transaction");
-            }
+          <Button variant="outlined" color="white" onClick={() => {
             navigate("/student");
           }}>Back</Button>
         </Stack>

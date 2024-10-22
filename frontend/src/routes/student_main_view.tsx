@@ -10,7 +10,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/header";
 import { useEffect, useRef, useState } from "react";
-import { getUser } from "../api";
+import { cancelTransactionToken, getUser } from "../api";
 import { UserDetails, UserType } from "../types/user";
 import Decimal from "decimal.js";
 
@@ -21,11 +21,14 @@ export default function StudentMainPage() {
 
   useEffect(() => {
     (async () => {
-      const user = await getUser()
+      let user = await getUser()
       if (user === null) {
         return navigate("/");
       }
       if (user.type === UserType.STUDENT) {
+        if (await cancelTransactionToken()) {
+          user = await getUser();
+        }
         setUser(user);
         return;
       } else if (user.type === UserType.ADMIN) {

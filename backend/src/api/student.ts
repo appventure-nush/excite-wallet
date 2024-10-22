@@ -33,6 +33,24 @@ router.post("/createTransaction", async (req, res) => {
 
     // create a transaction
     await sql.begin("ISOLATION LEVEL REPEATABLE READ", async (sql) => {
+        // cancel any existing transaction
+        const existingTransaction = await sql<TransactionTable[]>`
+            SELECT * FROM Transactions WHERE receiver_uid IS NULL AND sender_uid = ${
+                req.user!.uid
+            } LIMIT 1
+        `
+
+        if (existingTransaction.length > 0) {
+            const transactionRow = existingTransaction[0]
+            await sql`UPDATE Users SET balance = balance + ${
+                transactionRow.amount
+            } WHERE uid = ${req.user!.uid}`
+            await sql`
+                DELETE FROM Transactions
+                WHERE transaction_id = ${transactionRow.transaction_id}
+            `
+        }
+
         // check balance
         const user = await sql`SELECT balance FROM Users WHERE uid = ${
             req.user!.uid
@@ -67,28 +85,17 @@ router.post("/createTransaction", async (req, res) => {
 })
 
 router.post("/cancelTransaction", async (req, res) => {
-    const transId: unknown = req.body.transaction_id
-
-    if (!transId) {
-        return res.status(400).json({ message: "Transaction ID is required" })
-    }
-
-    if (typeof transId !== "string") {
-        return res
-            .status(400)
-            .json({ message: "Transaction ID must be a string" })
-    }
-
     await sql.begin("ISOLATION LEVEL REPEATABLE READ", async (sql) => {
         // get transaction
         const transaction = await sql<TransactionTable[]>`
-            SELECT * FROM Transactions WHERE transaction_id = ${transId} AND sender_uid = ${
+            SELECT * FROM Transactions WHERE receiver_uid IS NULL AND sender_uid = ${
                 req.user!.uid
-            }
+            } LIMIT 1
         `
 
         if (transaction.length === 0) {
-            return res.status(404).json({ message: "Transaction not found" })
+            // ok
+            return res.json({ message: "No transaction to cancel" })
         }
 
         // readd the balance
@@ -100,7 +107,7 @@ router.post("/cancelTransaction", async (req, res) => {
         // delete the transaction
         const response = await sql`
             DELETE FROM Transactions
-            WHERE transaction_id = ${transId} AND sender_uid = ${req.user!.uid}
+            WHERE transaction_id = ${transactionRow.transaction_id}
         `
         if (response.count === 0) {
             return res.status(404).json({ message: "Transaction not found" })

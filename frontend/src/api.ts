@@ -42,12 +42,14 @@ export async function getTransactionToken(amount: string): Promise<TransactionTo
     }
 }
 
-export async function cancelTransationToken(transId: string): Promise<boolean> {
+export async function cancelTransactionToken(): Promise<boolean> {
     try {
-        await fetcher.post("/student/cancelTransaction", {
-            transaction_id: transId
-        });
-        return true;
+        const resp = await fetcher.post("/student/cancelTransaction");
+        if (resp.data.message === "No transaction to cancel") {
+            return false; // don't update user
+        } else {
+            return true; // update user
+        }
     } catch (error) {
         return false;
     }
