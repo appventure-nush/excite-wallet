@@ -81,8 +81,9 @@ import { TransactionToken } from "../types/transaction";
             }}
           >
             <Typography variant="h6">Transaction QR Code:</Typography>
-            <QRCode value={token.transaction_id} style={{borderWidth: "8px", borderColor: "white"}}
-            />
+            <Container sx={{backgroundColor: "#ffffff", aspectRatio: "1", width: "fit-content", display: "flex", justifyContent: "center", alignItems: "center"}} >
+              <QRCode value={token.transaction_id} />
+            </Container>
           </Stack>
   
           <Stack

@@ -51,7 +51,9 @@ export default function StudentTopupPage() {
         }}
       >
         <Typography variant="h6">Top-up QR Code</Typography>
-        <QRCode value={token.topup_id} style={{borderWidth: "8px", borderColor: "white"}}/>
+        <Container sx={{backgroundColor: "#ffffff", aspectRatio: "1", width: "fit-content", display: "flex", justifyContent: "center", alignItems: "center"}} >
+        <QRCode value={token.topup_id} />
+        </Container>
         <Typography variant="h6">How do I top-up?</Typography>
         <Typography variant="body1">
           Show this QR code to the EXCITE admin booth, and pay them the money.
