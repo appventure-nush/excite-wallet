@@ -45,7 +45,7 @@ export async function getTransactionToken(amount: string): Promise<TransactionTo
 export async function cancelTransationToken(transId: string): Promise<boolean> {
     try {
         await fetcher.post("/student/cancelTransaction", {
-            transId
+            transaction_id: transId
         });
         return true;
     } catch (error) {
@@ -57,7 +57,7 @@ export async function getTransactionDetails(transId: string): Promise<Transactio
     try {
         const resp = await fetcher.get("/booth/getTransaction", {
             params: {
-                transId,
+                transaction_id: transId,
             },
         })
         return resp.data as TransactionDetails;
@@ -69,7 +69,7 @@ export async function getTransactionDetails(transId: string): Promise<Transactio
 export async function collectTransaction(transId: string): Promise<boolean> {
     try {
         await fetcher.post("/booth/collectTransaction", {
-            transId,
+            transaction_id: transId,
         });
         return true;
     } catch (error) {
@@ -102,7 +102,7 @@ export async function getTopup(tokenId: string): Promise<TopupDetails | null> {
     try {
     const resp = await fetcher.get("/admin/getTopup", {
         params: {
-            tokenId,
+            token_id: tokenId,
         },
     });
     return resp.data as TopupDetails;
@@ -114,7 +114,7 @@ export async function getTopup(tokenId: string): Promise<TopupDetails | null> {
 export async function addMoney(tokenId: string, amount: string): Promise<boolean> {
     try {
         await fetcher.post("/admin/addMoney", {
-            tokenId,
+            token_id: tokenId,
             amount,
         });
         return true;
