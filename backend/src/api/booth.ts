@@ -34,7 +34,7 @@ router.get("/getTransaction", async (req, res) => {
         start_timestamp: Date
         name: string
     }[]>`
-        SELECT Transaction.transaction_id, Transactions.status, Transactions.amount, Transactions.start_timestamp, Users.name  FROM Transactions INNER JOIN Users ON Users.uid = Transactions.sender_uid WHERE transaction_id = ${transId}
+        SELECT Transactions.transaction_id, Transactions.status, Transactions.amount, Transactions.start_timestamp, Users.name FROM Transactions INNER JOIN Users ON Users.uid = Transactions.sender_uid WHERE transaction_id = ${transId}
     `
 
     if (transaction.length === 0) {
