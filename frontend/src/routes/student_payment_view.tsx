@@ -70,7 +70,7 @@ import { TransactionToken } from "../types/transaction";
             }}
           >
             <Typography variant="h6">Paying:</Typography>
-            <Typography variant="h3">$6.12</Typography>
+            <Typography variant="h3">${amount}</Typography>
           </Stack>
   
           <Stack
