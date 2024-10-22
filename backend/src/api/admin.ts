@@ -28,7 +28,7 @@ router.get("/getTopup", async (req, res) => {
 
     // get topup
     const topup = await sql<TopupTable[]>`
-        SELECT * FROM Topup WHERE token_id = ${tokenId}
+        SELECT * FROM Topup WHERE topup_id = ${tokenId}
     `
 
     if (topup.length === 0) {
@@ -72,7 +72,7 @@ router.post("/addMoney", async (req, res) => {
     await sql.begin("ISOLATION LEVEL REPEATABLE READ", async (sql) => {
         // get topup
         const topup = await sql<TopupTable[]>`
-            SELECT * FROM Topup WHERE token_id = ${tokenId}
+            SELECT * FROM Topup WHERE topup_id = ${tokenId}
         `
         if (topup.length === 0) {
             return res.status(404).json({ message: "Token ID not found" })
@@ -100,7 +100,7 @@ router.post("/addMoney", async (req, res) => {
         await sql`
             UPDATE Topup
             SET ${sql(topupRow)}
-            WHERE token_id = ${topupRow.topup_id}
+            WHERE topup_id = ${topupRow.topup_id}
         `
 
         res.json({ message: "Money added" })
