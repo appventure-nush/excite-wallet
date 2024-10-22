@@ -101,7 +101,7 @@ export default function StudentMainPage() {
                 alert("Invalid amount!");
                 return;
               }
-              navigate("/student/payment", { state: { amount: amt.toString() } });
+              navigate("/student/payment", { state: { amount: amt.toFixed(2) } });
             }}>
               Make Payment
             </Button>

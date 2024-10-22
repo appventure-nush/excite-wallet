@@ -105,7 +105,7 @@ export default function AdminPage() {
                 alert("Invalid amount!");
                 return;
               }
-              const status = await addMoney(topup.token_id, amt.toString());
+              const status = await addMoney(topup.token_id, amt.toFixed(2));
               if (!status) {
                 alert("Failed to add money");
               }

@@ -73,10 +73,10 @@ router.post("/cancelTransaction", async (req, res) => {
         return res.status(400).json({ message: "Transaction ID is required" })
     }
 
-    if (typeof transId !== "number") {
+    if (typeof transId !== "string") {
         return res
             .status(400)
-            .json({ message: "Transaction ID must be a number" })
+            .json({ message: "Transaction ID must be a string" })
     }
 
     await sql.begin("ISOLATION LEVEL REPEATABLE READ", async (sql) => {
