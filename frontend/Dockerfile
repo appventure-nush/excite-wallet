@@ -21,4 +21,4 @@ FROM busybox:musl AS deploy
 WORKDIR /app/
 COPY --from=build /app/dist .
 COPY httpd.conf /etc/httpd.conf
-CMD ["busybox", "httpd", "-f", "-v", "-p", "3000", "-c", "/etc/httpd.conf"]
+CMD ["busybox", "httpd", "-f", "-v", "-p", "8080", "-c", "/etc/httpd.conf"]
