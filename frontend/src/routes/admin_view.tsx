@@ -61,7 +61,7 @@ export default function AdminPage() {
             return;
           }
           setTopup(resp);
-        }} classNames={{container: "scanner-container"}} />}
+        }} formats={["qr_code"]} classNames={{container: "scanner-container"}} />}
         
         <Divider variant="middle" />
 

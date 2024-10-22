@@ -55,7 +55,7 @@ export default function BoothMainPage() {
         <Button variant="contained" size="large" startIcon={!showScanner && <QrCodeScannerIcon />} onClick={() => setShowScanner((s) => !s)}>{showScanner ? "Stop Scanning" : "Scan Student's QR Code"}</Button>
         {showScanner && <Scanner onScan={(code) => {
           navigate("/booth/payment", {state: {transId: code[0].rawValue}})
-        }} classNames={{container: "scanner-container"}} />}
+        }} formats={["qr_code"]} classNames={{container: "scanner-container"}} />}
       </Stack>
     </Container>
   );
