@@ -125,6 +125,8 @@ router.post("/collectTransaction", async (req, res) => {
         await sql`
             UPDATE Users SET balance = balance + ${transactionRow.amount} WHERE uid = ${transactionRow.receiver_uid}
         `
+
+        return res.json({ message: "Transaction completed" })
     })
 })
 
