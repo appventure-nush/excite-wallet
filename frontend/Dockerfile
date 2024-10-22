@@ -9,6 +9,8 @@ RUN npm ci --include=dev
 
 FROM base AS build
 
+ARG BACKEND_URL=http://localhost:3000
+ENV VITE_BACKEND_URL=$BACKEND_URL
 WORKDIR /app/
 COPY . .
 COPY --from=dependencies /app/node_modules ./node_modules

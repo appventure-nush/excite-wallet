@@ -24,6 +24,8 @@ jobs:
         with:
           context: frontend
           push: true
+          build-args: |
+            BACKEND_URL=https://excite-api.nush.app
           tags: registry.nush.app/excite:frontend
       - name: Push image to AppVenture registry
         uses: docker/build-push-action@v5
