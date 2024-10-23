@@ -11,7 +11,7 @@ RUN bun run build
 
 FROM node:lts-alpine AS node
 
-# bun is specifically missing "Stream" from "node:net"
+# bun is incompatible with node-memcached :(
 # from https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md#smaller-images-without-npmyarn
 FROM alpine AS deploy
 # Create app directory

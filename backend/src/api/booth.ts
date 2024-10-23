@@ -27,14 +27,16 @@ router.get("/getTransaction", async (req, res) => {
             .json({ message: "Transaction ID must be a string" })
     }
 
-    const transaction = await sql<{
-        transaction_id: string
-        sender_uid: string
-        status: string
-        amount: string
-        start_timestamp: Date
-        name: string
-    }[]>`
+    const transaction = await sql<
+        {
+            transaction_id: string
+            sender_uid: string
+            status: string
+            amount: string
+            start_timestamp: Date
+            name: string
+        }[]
+    >`
         SELECT Transactions.transaction_id, Transactions.sender_uid, Transactions.status, Transactions.amount, Transactions.start_timestamp, Users.name FROM Transactions INNER JOIN Users ON Users.uid = Transactions.sender_uid WHERE transaction_id = ${transId}
     `
 
@@ -55,7 +57,8 @@ router.get("/getTransaction", async (req, res) => {
     const startTimestamp = transactionRow.start_timestamp
     const currentTimestamp = new Date()
     const diff = currentTimestamp.getTime() - startTimestamp.getTime()
-    if (diff > 1000 * 60 * 5) { // 5 minutes
+    if (diff > 1000 * 60 * 5) {
+        // 5 minutes
         await sql.begin("ISOLATION LEVEL REPEATABLE READ", async (sql) => {
             // delete transaction
             await sql`DELETE FROM Transactions WHERE transaction_id = ${transId}`
@@ -105,7 +108,8 @@ router.post("/collectTransaction", async (req, res) => {
         const startTimestamp = transactionRow.start_timestamp
         const currentTimestamp = new Date()
         const diff = currentTimestamp.getTime() - startTimestamp.getTime()
-        if (diff > 1000 * 60 * 5) { // 5 minutes
+        if (diff > 1000 * 60 * 5) {
+            // 5 minutes
             // delete transaction
             await sql`DELETE FROM Transactions WHERE transaction_id = ${transId}`
             // refund balance

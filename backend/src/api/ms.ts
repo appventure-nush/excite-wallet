@@ -11,10 +11,7 @@ router.get(
     }),
 )
 
-router.post("/callback",
-    passport.authenticate("microsoft"), 
-    (req, res) => {
-
+router.post("/callback", passport.authenticate("microsoft"), (req, res) => {
     res.redirect(settings.HOMEPAGE_URL)
 })
 

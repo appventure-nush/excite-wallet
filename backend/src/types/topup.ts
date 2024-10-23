@@ -7,3 +7,7 @@ export interface TopupTable {
     amount: string | null // DECIMAL(10, 2)
     lucky_draw_code: string // CHAR(13)
 }
+
+export interface TopupTableInsert extends Omit<TopupTable, "lucky_draw_code"> {
+    lucky_draw_code?: string // CHAR(13), optional
+}

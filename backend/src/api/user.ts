@@ -1,7 +1,5 @@
-import { sql } from "db"
 import { Router } from "express"
-import passport, { use } from "passport"
-import { UserDetails, UserTable, UserType } from "types/user"
+import passport from "passport"
 import { getUser } from "utils"
 
 const router = Router()

@@ -2,7 +2,7 @@ import { sql } from "db"
 import Decimal from "decimal.js"
 import { Router } from "express"
 import { getRandom } from "getRandom"
-import { TopupTable } from "types/topup"
+import { TopupTableInsert } from "types/topup"
 import { TransactionTable } from "types/transaction"
 import { UserType } from "types/user"
 
@@ -127,7 +127,7 @@ router.post("/createToken", async (req, res) => {
         WHERE student_uid = ${req.user!.uid} AND admin_uid IS NULL
     `
 
-    const topup: TopupTable = {
+    const topup: TopupTableInsert = {
         topup_id: topupId,
         student_uid: req.user!.uid,
         student_name: req.user!.name,
