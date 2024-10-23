@@ -5,4 +5,5 @@ export interface TopupTable {
     admin_uid: string | null // CHAR(36),
     admin_name: string | null // VARCHAR(255)
     amount: string | null // DECIMAL(10, 2)
+    lucky_draw_code: string // CHAR(13)
 }

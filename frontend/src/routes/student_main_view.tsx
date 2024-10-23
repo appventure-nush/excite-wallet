@@ -5,7 +5,7 @@ import {
   Typography,
   Divider,
   TextField,
-  InputAdornment
+  InputAdornment,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/header";
@@ -21,7 +21,7 @@ export default function StudentMainPage() {
 
   useEffect(() => {
     (async () => {
-      let user = await getUser()
+      let user = await getUser();
       if (user === null) {
         return navigate("/");
       }
@@ -36,8 +36,8 @@ export default function StudentMainPage() {
       } else if (user.type === UserType.BOOTH) {
         navigate("/booth");
       }
-    })()
-  }, [])
+    })();
+  }, []);
 
   if (user === null) {
     return <></>;
@@ -89,12 +89,21 @@ export default function StudentMainPage() {
             variant="filled"
             slotProps={{
               input: {
-                startAdornment: <InputAdornment position="start"><Typography variant="body2">$</Typography></InputAdornment>
-              }
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Typography variant="body2">$</Typography>
+                  </InputAdornment>
+                ),
+              },
             }}
-            onChange={(e) => {amount.current = e.target.value}}
+            onChange={(e) => {
+              amount.current = e.target.value;
+            }}
           />
-            <Button variant="contained" size="large" onClick={() => {
+          <Button
+            variant="contained"
+            size="large"
+            onClick={() => {
               const amt = new Decimal(amount.current).toDP(2);
               if (amt.gt(user.balance)) {
                 alert("Insufficient balance!");
@@ -104,10 +113,13 @@ export default function StudentMainPage() {
                 alert("Invalid amount!");
                 return;
               }
-              navigate("/student/payment", { state: { amount: amt.toFixed(2) } });
-            }}>
-              Make Payment
-            </Button>
+              navigate("/student/payment", {
+                state: { amount: amt.toFixed(2) },
+              });
+            }}
+          >
+            Make Payment
+          </Button>
         </Stack>
 
         <Stack

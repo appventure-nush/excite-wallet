@@ -1,4 +1,11 @@
-import { Button, Container, Stack, Typography, Divider, Box } from "@mui/material";
+import {
+  Button,
+  Container,
+  Stack,
+  Typography,
+  Divider,
+  Box,
+} from "@mui/material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/header";
 import { useState, useEffect } from "react";
@@ -9,7 +16,9 @@ import { TransactionDetails } from "../types/transaction";
 export default function BoothConfirmPaymentPage() {
   const navigate = useNavigate();
   const [user, setUser] = useState<UserDetails | null>(null);
-  const [transaction, setTransaction] = useState<TransactionDetails | null>(null);
+  const [transaction, setTransaction] = useState<TransactionDetails | null>(
+    null,
+  );
   const location = useLocation();
   const transId: string | undefined = location.state.transId;
 
@@ -19,7 +28,7 @@ export default function BoothConfirmPaymentPage() {
       return;
     }
     (async () => {
-      const user = await getUser()
+      const user = await getUser();
       if (user === null) {
         return navigate("/");
       }
@@ -37,8 +46,8 @@ export default function BoothConfirmPaymentPage() {
         setTransaction(transaction);
         return;
       }
-    })()
-  }, [])
+    })();
+  }, []);
 
   if (user === null || !transId || transaction === null) {
     return <></>;
@@ -61,15 +70,17 @@ export default function BoothConfirmPaymentPage() {
         <Divider variant="middle" />
         <Typography variant="h6">{transaction.name} is paying:</Typography>
         <Typography variant="h4">${transaction.amount}</Typography>
-        <Button variant="contained" size="large" onClick={
-          async () => {
+        <Button
+          variant="contained"
+          size="large"
+          onClick={async () => {
             const status = await collectTransaction(transId);
             if (!status) {
               alert("Failed to collect payment");
             }
             navigate("/booth");
-          }
-        }>
+          }}
+        >
           Confirm Payment
         </Button>
         <Box sx={{ position: "fixed", bottom: "2em" }}>

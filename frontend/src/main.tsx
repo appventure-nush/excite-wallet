@@ -1,28 +1,25 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 
-import {
-  createBrowserRouter,
-  RouterProvider
-} from "react-router-dom"
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { ThemeProvider } from '@mui/material/styles'
-import { CssBaseline } from '@mui/material'
-import theme from './theme'
+import { ThemeProvider } from "@mui/material/styles";
+import { CssBaseline } from "@mui/material";
+import theme from "./theme";
 
-import './index.css'
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
+import "./index.css";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 
-import LoginPage from './routes/login'
-import StudentMainPage from './routes/student_main_view'
-import StudentTopupPage from './routes/student_topup'
-import StudentPaymentPage from './routes/student_payment_view'
-import BoothMainPage from './routes/booth_main_view'
-import BoothConfirmPaymentPage from './routes/booth_confirm_payment_view'
-import AdminPage from './routes/admin_view'
+import LoginPage from "./routes/login";
+import StudentMainPage from "./routes/student_main_view";
+import StudentTopupPage from "./routes/student_topup";
+import StudentPaymentPage from "./routes/student_payment_view";
+import BoothMainPage from "./routes/booth_main_view";
+import BoothConfirmPaymentPage from "./routes/booth_confirm_payment_view";
+import AdminPage from "./routes/admin_view";
 
 const router = createBrowserRouter([
   {
@@ -55,11 +52,11 @@ const router = createBrowserRouter([
   },
 ]);
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <RouterProvider router={router} />
     </ThemeProvider>
   </StrictMode>,
-)
+);

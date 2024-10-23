@@ -1,4 +1,5 @@
 CREATE TYPE TransactionStatus AS ENUM('PENDING', 'COMPLETED');
+CREATE SEQUENCE LuckyDrawCodeSeq MAXVALUE 999999;
 
 CREATE TABLE Users(
     uid CHAR(36) PRIMARY KEY,
@@ -26,5 +27,6 @@ CREATE TABLE Topup(
     student_name VARCHAR(255) NOT NULL,
     admin_uid CHAR(36),
     admin_name VARCHAR(255),
-    amount DECIMAL(10, 2)
+    amount DECIMAL(10, 2),
+    lucky_draw_code CHAR(13) DEFAULT 'EXCITE-' || LPAD(NEXTVAL('LuckyDrawCodeSeq')::TEXT, 6, '0') NOT NULL
 );

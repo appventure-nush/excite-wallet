@@ -27,7 +27,7 @@ export default function AdminPage() {
 
   useEffect(() => {
     (async () => {
-      const user = await getUser()
+      const user = await getUser();
       if (user === null) {
         return navigate("/");
       }
@@ -38,9 +38,9 @@ export default function AdminPage() {
       } else if (user.type === UserType.BOOTH) {
         navigate("/booth");
       }
-    })()
-  }, [])
-  
+    })();
+  }, []);
+
   return (
     <Container maxWidth="sm">
       <Header />
@@ -53,24 +53,37 @@ export default function AdminPage() {
         }}
       >
         <Typography variant="body1">Administration</Typography>
-        <Button variant="contained" size="large" startIcon={!showScanner && <QrCodeScannerIcon />} onClick={() => {
-          if (showScanner) {
-            setShowScanner(false);
-          } else {
-            setShowScanner(true);
-            setTopup(null);
-          }
-        }}>{showScanner ? "Stop Scanning" : "Scan Student's QR Code"}</Button>
-        {showScanner && <Scanner onScan={async (code) => {
-          const resp = await getTopup(code[0].rawValue);
-          if (resp === null) {
-            alert("Failed to fetch topup details");
-            return;
-          }
-          setShowScanner(false);
-          setTopup(resp);
-        }} formats={["qr_code"]} classNames={{container: "scanner-container"}} />}
-        
+        <Button
+          variant="contained"
+          size="large"
+          startIcon={!showScanner && <QrCodeScannerIcon />}
+          onClick={() => {
+            if (showScanner) {
+              setShowScanner(false);
+            } else {
+              setShowScanner(true);
+              setTopup(null);
+            }
+          }}
+        >
+          {showScanner ? "Stop Scanning" : "Scan Student's QR Code"}
+        </Button>
+        {showScanner && (
+          <Scanner
+            onScan={async (code) => {
+              const resp = await getTopup(code[0].rawValue);
+              if (resp === null) {
+                alert("Failed to fetch topup details");
+                return;
+              }
+              setShowScanner(false);
+              setTopup(resp);
+            }}
+            formats={["qr_code"]}
+            classNames={{ container: "scanner-container" }}
+          />
+        )}
+
         <Divider variant="middle" />
 
         {topup ? (
@@ -84,6 +97,26 @@ export default function AdminPage() {
           >
             <Typography variant="h6">Topup {topup.student_name}:</Typography>
             <Typography variant="body1">Balance to be added:</Typography>
+            <Stack direction="row" spacing={2}>
+              {[1, 2, 5, 10].map((amt) => (
+                <Button
+                  variant="contained"
+                  size="large"
+                  onClick={async () => {
+                    const status = await addMoney(
+                      topup.token_id,
+                      amt.toFixed(2),
+                    );
+                    if (!status) {
+                      alert("Failed to add money");
+                    }
+                    setTopup(null);
+                  }}
+                >
+                  ${amt}
+                </Button>
+              ))}
+            </Stack>
             <TextField
               id="student-pay-amount"
               label="Amount"
@@ -97,29 +130,41 @@ export default function AdminPage() {
                   ),
                 },
               }}
-              onChange={(e) => {amount.current = e.target.value}}
+              onChange={(e) => {
+                amount.current = e.target.value;
+              }}
             />
-            <Button variant="contained" size="large" onClick={async () => {
-              const amt = new Decimal(amount.current).toDP(2);
-              if (amt.lte(0)) {
-                alert("Invalid amount!");
-                return;
-              }
-              const status = await addMoney(topup.token_id, amt.toFixed(2));
-              if (!status) {
-                alert("Failed to add money");
-              }
-              setTopup(null);
-            }}>
+            <Button
+              variant="contained"
+              size="large"
+              onClick={async () => {
+                const amt = new Decimal(amount.current).toDP(2);
+                if (amt.lte(0)) {
+                  alert("Invalid amount!");
+                  return;
+                }
+                const status = await addMoney(topup.token_id, amt.toFixed(2));
+                if (!status) {
+                  alert("Failed to add money");
+                }
+                setTopup(null);
+              }}
+            >
               Confirm Top-up
             </Button>
             <Box sx={{ position: "fixed", bottom: "2em" }}>
-              <Button variant="outlined" color="white" onClick={() => setTopup(null)}>
+              <Button
+                variant="outlined"
+                color="white"
+                onClick={() => setTopup(null)}
+              >
                 Cancel
               </Button>
             </Box>
           </Stack>
-        ) : <></>}
+        ) : (
+          <></>
+        )}
       </Stack>
     </Container>
   );

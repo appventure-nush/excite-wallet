@@ -1,16 +1,11 @@
-import {
-  Button,
-  Container,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Button, Container, Stack, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/header";
-import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
+import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import { useState, useEffect } from "react";
 import { getUser } from "../api";
 import { UserDetails, UserType } from "../types/user";
-import { Scanner } from '@yudiel/react-qr-scanner';
+import { Scanner } from "@yudiel/react-qr-scanner";
 
 export default function BoothMainPage() {
   const navigate = useNavigate();
@@ -19,7 +14,7 @@ export default function BoothMainPage() {
 
   useEffect(() => {
     (async () => {
-      const user = await getUser()
+      const user = await getUser();
       if (user === null) {
         return navigate("/");
       }
@@ -31,8 +26,8 @@ export default function BoothMainPage() {
         setUser(user);
         return;
       }
-    })()
-  }, [])
+    })();
+  }, []);
 
   if (user === null) {
     return <></>;
@@ -52,10 +47,25 @@ export default function BoothMainPage() {
         <Typography variant="body1">Booth: {user.name}</Typography>
         <Typography variant="h6">Your balance:</Typography>
         <Typography variant="h3">${user.balance}</Typography>
-        <Button variant="contained" size="large" startIcon={!showScanner && <QrCodeScannerIcon />} onClick={() => setShowScanner((s) => !s)}>{showScanner ? "Stop Scanning" : "Scan Student's QR Code"}</Button>
-        {showScanner && <Scanner onScan={(code) => {
-          navigate("/booth/payment", {state: {transId: code[0].rawValue}})
-        }} formats={["qr_code"]} classNames={{container: "scanner-container"}} />}
+        <Button
+          variant="contained"
+          size="large"
+          startIcon={!showScanner && <QrCodeScannerIcon />}
+          onClick={() => setShowScanner((s) => !s)}
+        >
+          {showScanner ? "Stop Scanning" : "Scan Student's QR Code"}
+        </Button>
+        {showScanner && (
+          <Scanner
+            onScan={(code) => {
+              navigate("/booth/payment", {
+                state: { transId: code[0].rawValue },
+              });
+            }}
+            formats={["qr_code"]}
+            classNames={{ container: "scanner-container" }}
+          />
+        )}
       </Stack>
     </Container>
   );

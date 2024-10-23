@@ -14,7 +14,7 @@ export default function StudentTopupPage() {
 
   useEffect(() => {
     (async () => {
-      const user = await getUser()
+      const user = await getUser();
       if (user === null) {
         return navigate("/");
       }
@@ -31,8 +31,8 @@ export default function StudentTopupPage() {
       } else if (user.type === UserType.BOOTH) {
         navigate("/booth");
       }
-    })()
-  }, [])
+    })();
+  }, []);
 
   if (user === null || token === null) {
     return <></>;
@@ -51,8 +51,17 @@ export default function StudentTopupPage() {
         }}
       >
         <Typography variant="h6">Top-up QR Code</Typography>
-        <Container sx={{backgroundColor: "#ffffff", aspectRatio: "1", width: "fit-content", display: "flex", justifyContent: "center", alignItems: "center"}} >
-        <QRCode value={token.topup_id} />
+        <Container
+          sx={{
+            backgroundColor: "#ffffff",
+            aspectRatio: "1",
+            width: "fit-content",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <QRCode value={token.topup_id} />
         </Container>
         <Typography variant="h6">How do I top-up?</Typography>
         <Typography variant="body1">
@@ -61,7 +70,11 @@ export default function StudentTopupPage() {
           page if your balance does not change!
         </Typography>
         <Divider variant="middle" />
-        <Link to={"/student"} style={{color:'#FFFFFF'}}><Button variant="outlined" color="white">Back</Button></Link>
+        <Link to={"/student"} style={{ color: "#FFFFFF" }}>
+          <Button variant="outlined" color="white">
+            Back
+          </Button>
+        </Link>
       </Stack>
     </Container>
   );

@@ -19,9 +19,9 @@ export default function LoginPage() {
 
   useEffect(() => {
     (async () => {
-      const user = await getUser()
+      const user = await getUser();
       if (user === null) {
-        return
+        return;
       }
       if (user.type === UserType.STUDENT) {
         navigate("/student");
@@ -30,8 +30,8 @@ export default function LoginPage() {
       } else if (user.type === UserType.BOOTH) {
         navigate("/booth");
       }
-    })()
-  }, [])
+    })();
+  }, []);
 
   return (
     <Container maxWidth="sm">
@@ -45,7 +45,7 @@ export default function LoginPage() {
           my: 8,
         }}
       >
-          <Typography variant="h5">Login to NUSHPay!</Typography>
+        <Typography variant="h5">Login to NUSHPay!</Typography>
 
         <Typography variant="h6">Login for Students</Typography>
         <Button
@@ -67,7 +67,9 @@ export default function LoginPage() {
           label="Username"
           variant="filled"
           size="small"
-          onChange={(e) => {username.current = e.target.value}}
+          onChange={(e) => {
+            username.current = e.target.value;
+          }}
         />
         <TextField
           className="login-wide"
@@ -76,16 +78,23 @@ export default function LoginPage() {
           variant="filled"
           size="small"
           type="password"
-          onChange={(e) => {password.current = e.target.value}}
+          onChange={(e) => {
+            password.current = e.target.value;
+          }}
         />
-        <Button className="login-wide" variant="contained" size="large" onClick={async () => {
-          const resp = await login(username.current, password.current)
-          if (resp) {
-            window.location.reload()
-          } else {
-            alert("Login failed")
-          }
-        }}>
+        <Button
+          className="login-wide"
+          variant="contained"
+          size="large"
+          onClick={async () => {
+            const resp = await login(username.current, password.current);
+            if (resp) {
+              window.location.reload();
+            } else {
+              alert("Login failed");
+            }
+          }}
+        >
           Login
         </Button>
       </Stack>
