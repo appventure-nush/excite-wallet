@@ -20,9 +20,7 @@ declare module "@mui/material/Button" {
 
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
-    body1: true;
     italic1: true;
-    h3: true;
   }
 }
 
@@ -73,6 +71,14 @@ const theme = createTheme({
                 fontWeight: "bold",
                 textAlign: "center",
                 color: "#00A39C", // find a way to fix this
+              },
+            },
+            {
+              props: { variant: "h5" },
+              style: {
+                fontSize: "1.5rem",
+                fontWeight: "bold",
+                textAlign: "center",
               },
             },
           ],

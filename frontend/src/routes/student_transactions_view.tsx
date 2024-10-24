@@ -59,12 +59,12 @@ export default function StudentTransactionHistoryPage() {
           transactionDetails.map((transaction, idx) => (
             <Card variant="outlined" key={idx}>
               <CardContent>
-                <Typography variant="h6">
-                  {new Decimal(transaction.amount).toFixed(2)}
+                <Typography variant="h5">
+                  ${new Decimal(transaction.amount).toFixed(2)}
                 </Typography>
                 <Typography variant="body1">To {transaction.name}</Typography>
                 <Typography variant="body1">
-                  Timestamp: {transaction.completed_timestamp.toLocaleString()}
+                  {transaction.completed_timestamp.toLocaleString()}
                 </Typography>
               </CardContent>
             </Card>

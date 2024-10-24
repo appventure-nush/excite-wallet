@@ -59,8 +59,8 @@ export default function StudentTopupHistoryPage() {
           topupDetails.map((topup, idx) => (
             <Card variant="outlined" key={idx}>
               <CardContent>
-                <Typography variant="h6">
-                  {new Decimal(topup.amount).toFixed(2)}
+                <Typography variant="h5">
+                  ${new Decimal(topup.amount).toFixed(2)}
                 </Typography>
                 <Typography variant="body1">
                   Lucky draw code: {topup.lucky_draw_code}
