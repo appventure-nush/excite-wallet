@@ -1,4 +1,4 @@
-export interface TopupTable {
+export type TopupTable = {
     topup_id: string // CHAR(36)
     student_uid: string // CHAR(36),
     student_name: string // VARCHAR(255),

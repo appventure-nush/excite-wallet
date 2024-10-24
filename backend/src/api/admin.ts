@@ -6,6 +6,7 @@ import { TransactionTable } from "types/transaction"
 import { UserTable, UserType } from "types/user"
 import Archiver from "archiver"
 import ObjectsToCsv from "objects-to-csv"
+import { objectsToCsv } from "utils"
 
 const router = Router()
 router.use((req, res, next) => {
@@ -110,7 +111,7 @@ router.post("/addMoney", async (req, res) => {
     })
 })
 
-router.get("/dump", async (req, res) => {
+router.get("/dump", async (_, res) => {
     const topups = await sql<TopupTable[]>`
         SELECT * FROM Topup
     `
@@ -130,13 +131,13 @@ router.get("/dump", async (req, res) => {
     archive.pipe(res)
 
     await archive
-        .append(await new ObjectsToCsv(topups).toString(true, true), {
+        .append(objectsToCsv(topups), {
             name: "topups.csv",
         })
-        .append(await new ObjectsToCsv(transactions).toString(true, true), {
+        .append(objectsToCsv(transactions), {
             name: "transactions.csv",
         })
-        .append(await new ObjectsToCsv(users).toString(true, true), {
+        .append(objectsToCsv(users), {
             name: "users.csv",
         })
         .finalize()

@@ -7,31 +7,31 @@ import {
   TextField,
 } from "@mui/material";
 import MicrosoftIcon from "@mui/icons-material/Microsoft";
-import { getMSLoginUrl, getUser, login } from "../api";
-import { useEffect, useRef } from "react";
+import { getMSLoginUrl, login } from "../api";
+import { useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserType } from "../types/user";
+import { UserContext } from "../UserProvider";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const username = useRef("");
   const password = useRef("");
+  const { user, updateUser } = useContext(UserContext);
 
   useEffect(() => {
-    (async () => {
-      const user = await getUser();
-      if (user === null) {
-        return;
-      }
-      if (user.type === UserType.STUDENT) {
-        navigate("/student");
-      } else if (user.type === UserType.ADMIN) {
-        navigate("/admin");
-      } else if (user.type === UserType.BOOTH) {
-        navigate("/booth");
-      }
-    })();
-  }, []);
+    if (user === undefined) {
+      return;
+    } else if (user === null) {
+      return;
+    } else if (user.type === UserType.STUDENT) {
+      navigate("/student");
+    } else if (user.type === UserType.ADMIN) {
+      navigate("/admin");
+    } else if (user.type === UserType.BOOTH) {
+      navigate("/booth");
+    }
+  }, [user]);
 
   return (
     <Container maxWidth="sm">
@@ -89,6 +89,7 @@ export default function LoginPage() {
           onClick={async () => {
             const resp = await login(username.current, password.current);
             if (resp) {
+              await updateUser();
               window.location.reload();
             } else {
               alert("Login failed");

@@ -1,9 +1,12 @@
 import { Button, Stack, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../api";
+import { useContext } from "react";
+import { UserContext } from "../UserProvider";
 
 export default function Header() {
   const navigate = useNavigate();
+  const { updateUser } = useContext(UserContext);
 
   return (
     <Stack
@@ -20,6 +23,7 @@ export default function Header() {
           if (!resp) {
             alert("Failed to log out");
           }
+          await updateUser();
           navigate("/");
         }}
       >

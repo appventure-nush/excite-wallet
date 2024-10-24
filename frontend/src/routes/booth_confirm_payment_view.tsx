@@ -8,48 +8,48 @@ import {
 } from "@mui/material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/header";
-import { useState, useEffect } from "react";
-import { collectTransaction, getTransactionDetails, getUser } from "../api";
-import { UserDetails, UserType } from "../types/user";
+import { useState, useEffect, useContext } from "react";
+import { collectTransaction, getTransactionDetails } from "../api";
+import { UserType } from "../types/user";
 import { TransactionDetails } from "../types/transaction";
+import { UserContext } from "../UserProvider";
 
 export default function BoothConfirmPaymentPage() {
   const navigate = useNavigate();
-  const [user, setUser] = useState<UserDetails | null>(null);
   const [transaction, setTransaction] = useState<TransactionDetails | null>(
     null,
   );
   const location = useLocation();
   const transId: string | undefined = location.state.transId;
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     if (!transId) {
       navigate("/booth");
       return;
     }
-    (async () => {
-      const user = await getUser();
-      if (user === null) {
-        return navigate("/");
-      }
-      if (user.type === UserType.STUDENT) {
-        navigate("/student");
-      } else if (user.type === UserType.ADMIN) {
-        navigate("/admin");
-      } else if (user.type === UserType.BOOTH) {
-        setUser(user);
+    if (user === undefined) {
+      return;
+    } else if (user === null) {
+      return navigate("/");
+    } else if (user.type === UserType.STUDENT) {
+      navigate("/student");
+    } else if (user.type === UserType.ADMIN) {
+      navigate("/admin");
+    } else if (user.type === UserType.BOOTH) {
+      (async () => {
         const transaction = await getTransactionDetails(transId);
         if (transaction === null) {
           navigate("/booth");
           return;
         }
         setTransaction(transaction);
-        return;
-      }
-    })();
-  }, []);
+      })();
+      return;
+    }
+  }, [user]);
 
-  if (user === null || !transId || transaction === null) {
+  if (!user || !transId || transaction === null) {
     return <></>;
   }
 

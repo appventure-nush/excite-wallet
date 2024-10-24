@@ -9,37 +9,36 @@ import {
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/header";
-import { useEffect, useRef, useState } from "react";
-import { cancelTransactionToken, getUser } from "../api";
-import { UserDetails, UserType } from "../types/user";
+import { useContext, useEffect, useRef } from "react";
+import { cancelTransactionToken } from "../api";
+import { UserType } from "../types/user";
 import Decimal from "decimal.js";
+import { UserContext } from "../UserProvider";
 
 export default function StudentMainPage() {
   const navigate = useNavigate();
-  const [user, setUser] = useState<UserDetails | null>(null);
+  const { user, updateUser } = useContext(UserContext);
   const amount = useRef<string>("0");
 
   useEffect(() => {
-    (async () => {
-      let user = await getUser();
-      if (user === null) {
-        return navigate("/");
-      }
-      if (user.type === UserType.STUDENT) {
-        if (await cancelTransactionToken()) {
-          user = await getUser();
-        }
-        setUser(user);
-        return;
-      } else if (user.type === UserType.ADMIN) {
-        navigate("/admin");
-      } else if (user.type === UserType.BOOTH) {
-        navigate("/booth");
-      }
-    })();
-  }, []);
+    if (user === undefined) {
+      return;
+    } else if (user === null) {
+      return navigate("/");
+    } else if (user.type === UserType.STUDENT) {
+      (async () => {
+        await cancelTransactionToken();
+        await updateUser();
+      })();
+      return;
+    } else if (user.type === UserType.ADMIN) {
+      navigate("/admin");
+    } else if (user.type === UserType.BOOTH) {
+      navigate("/booth");
+    }
+  }, [user]);
 
-  if (user === null) {
+  if (!user) {
     return <></>;
   }
 

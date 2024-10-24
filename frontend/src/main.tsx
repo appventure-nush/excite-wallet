@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
@@ -20,35 +20,47 @@ import StudentPaymentPage from "./routes/student_payment_view";
 import BoothMainPage from "./routes/booth_main_view";
 import BoothConfirmPaymentPage from "./routes/booth_confirm_payment_view";
 import AdminPage from "./routes/admin_view";
+import UserProvider from "./UserProvider";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <LoginPage />,
-  },
-  {
-    path: "/student",
-    element: <StudentMainPage />,
-  },
-  {
-    path: "/student/topup",
-    element: <StudentTopupPage />,
-  },
-  {
-    path: "/student/payment",
-    element: <StudentPaymentPage />,
-  },
-  {
-    path: "/booth",
-    element: <BoothMainPage />,
-  },
-  {
-    path: "/booth/payment",
-    element: <BoothConfirmPaymentPage />,
-  },
-  {
-    path: "/admin",
-    element: <AdminPage />,
+    element: (
+      <UserProvider>
+        <Outlet />
+      </UserProvider>
+    ),
+    children: [
+      {
+        path: "/",
+        element: <LoginPage />,
+        index: true,
+      },
+      {
+        path: "/student",
+        element: <StudentMainPage />,
+      },
+      {
+        path: "/student/topup",
+        element: <StudentTopupPage />,
+      },
+      {
+        path: "/student/payment",
+        element: <StudentPaymentPage />,
+      },
+      {
+        path: "/booth",
+        element: <BoothMainPage />,
+      },
+      {
+        path: "/booth/payment",
+        element: <BoothConfirmPaymentPage />,
+      },
+      {
+        path: "/admin",
+        element: <AdminPage />,
+      },
+    ],
   },
 ]);
 

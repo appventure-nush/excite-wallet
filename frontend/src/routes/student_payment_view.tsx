@@ -1,16 +1,17 @@
 import { Button, Container, Stack, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/header";
-import { useState, useEffect } from "react";
-import { getTransactionToken, getUser } from "../api";
-import { UserDetails, UserType } from "../types/user";
+import { useState, useEffect, useContext } from "react";
+import { getTransactionToken } from "../api";
+import { UserType } from "../types/user";
 import QRCode from "react-qr-code";
 import { TransactionToken } from "../types/transaction";
+import { UserContext } from "../UserProvider";
 
 export default function StudentPaymentPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [user, setUser] = useState<UserDetails | null>(null);
+  const { user } = useContext(UserContext);
   const [token, setToken] = useState<TransactionToken | null>(null);
   const amount: string | undefined = location.state.amount;
 
@@ -19,29 +20,28 @@ export default function StudentPaymentPage() {
       navigate("/student");
       return;
     }
-    (async () => {
-      const user = await getUser();
-      if (user === null) {
-        return navigate("/");
-      }
-      if (user.type === UserType.STUDENT) {
-        setUser(user);
+    if (user === undefined) {
+      return;
+    } else if (user === null) {
+      return navigate("/");
+    } else if (user.type === UserType.STUDENT) {
+      (async () => {
         const token = await getTransactionToken(amount);
         if (token === null) {
           navigate("/student");
           return;
         }
         setToken(token);
-        return;
-      } else if (user.type === UserType.ADMIN) {
-        navigate("/admin");
-      } else if (user.type === UserType.BOOTH) {
-        navigate("/booth");
-      }
-    })();
-  }, []);
+      })();
+      return;
+    } else if (user.type === UserType.ADMIN) {
+      navigate("/admin");
+    } else if (user.type === UserType.BOOTH) {
+      navigate("/booth");
+    }
+  }, [user]);
 
-  if (user === null || !amount || token === null) {
+  if (!user || !amount || token === null) {
     return <></>;
   }
 

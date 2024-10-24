@@ -1,4 +1,4 @@
-export interface TransactionTable {
+export type TransactionTable = {
     transaction_id: string // CHAR(36)
     start_timestamp: Date // TIMESTAMP
     completed_timestamp: Date | null // TIMESTAMP

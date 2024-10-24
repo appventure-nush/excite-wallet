@@ -1,38 +1,38 @@
 import { Button, Container, Stack, Typography, Divider } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/header";
-import { useState, useEffect } from "react";
-import { getTopupToken, getUser } from "../api";
-import { UserDetails, UserType } from "../types/user";
+import { useState, useEffect, useContext } from "react";
+import { getTopupToken } from "../api";
+import { UserType } from "../types/user";
 import QRCode from "react-qr-code";
 import { TopupToken } from "../types/topup";
+import { UserContext } from "../UserProvider";
 
 export default function StudentTopupPage() {
   const navigate = useNavigate();
-  const [user, setUser] = useState<UserDetails | null>(null);
+  const { user } = useContext(UserContext);
   const [token, setToken] = useState<TopupToken | null>(null);
 
   useEffect(() => {
-    (async () => {
-      const user = await getUser();
-      if (user === null) {
-        return navigate("/");
-      }
-      if (user.type === UserType.STUDENT) {
-        setUser(user);
+    if (user === undefined) {
+      return;
+    } else if (user === null) {
+      return navigate("/");
+    } else if (user.type === UserType.STUDENT) {
+      (async () => {
         const token = await getTopupToken();
         if (token === null) {
           return;
         }
         setToken(token);
-        return;
-      } else if (user.type === UserType.ADMIN) {
-        navigate("/admin");
-      } else if (user.type === UserType.BOOTH) {
-        navigate("/booth");
-      }
-    })();
-  }, []);
+      })();
+      return;
+    } else if (user.type === UserType.ADMIN) {
+      navigate("/admin");
+    } else if (user.type === UserType.BOOTH) {
+      navigate("/booth");
+    }
+  }, [user]);
 
   if (user === null || token === null) {
     return <></>;

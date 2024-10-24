@@ -10,13 +10,14 @@ import {
 } from "@mui/material";
 import Header from "../components/header";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { addMoney, getTopup, getUser } from "../api";
+import { addMoney, getTopup } from "../api";
 import { UserType } from "../types/user";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { TopupDetails } from "../types/topup";
 import Decimal from "decimal.js";
+import { UserContext } from "../UserProvider";
 
 export default function AdminPage() {
   const [topup, setTopup] = useState<TopupDetails | null>(null);
@@ -25,21 +26,21 @@ export default function AdminPage() {
   const navigate = useNavigate();
   const amount = useRef("");
 
+  const { user } = useContext(UserContext);
+
   useEffect(() => {
-    (async () => {
-      const user = await getUser();
-      if (user === null) {
-        return navigate("/");
-      }
-      if (user.type === UserType.STUDENT) {
-        navigate("/student");
-      } else if (user.type === UserType.ADMIN) {
-        return;
-      } else if (user.type === UserType.BOOTH) {
-        navigate("/booth");
-      }
-    })();
-  }, []);
+    if (user === undefined) {
+      return;
+    } else if (user === null) {
+      return navigate("/");
+    } else if (user.type === UserType.STUDENT) {
+      navigate("/student");
+    } else if (user.type === UserType.ADMIN) {
+      return;
+    } else if (user.type === UserType.BOOTH) {
+      navigate("/booth");
+    }
+  }, [user]);
 
   return (
     <Container maxWidth="sm">

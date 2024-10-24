@@ -15,7 +15,7 @@ export enum UserType {
     ADMIN = "admin",
 }
 
-export interface UserTable {
+export type UserTable = {
     uid: string // CHAR(36)
     username: string // VARCHAR(255)
     name: string // VARCHAR(255)
