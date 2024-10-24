@@ -8,7 +8,7 @@ import { UserContext } from "../UserProvider";
 import { getTopupHistory } from "../api";
 import { TopupHistoryDetails } from "../types/topup";
 
-export default function StudentTopupPage() {
+export default function StudentTopupHistoryPage() {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [topupDetails, setTopupDetails] = useState<

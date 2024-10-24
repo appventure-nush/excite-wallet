@@ -8,7 +8,7 @@ import { UserContext } from "../UserProvider";
 import { TransactionHistoryDetails } from "../types/transaction";
 import { getTransactionHistory } from "../api";
 
-export default function StudentTransactionPage() {
+export default function StudentTransactionHistoryPage() {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [transactionDetails, setTransactionDetails] = useState<
