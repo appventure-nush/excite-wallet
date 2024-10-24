@@ -12,12 +12,13 @@ import Header from "../components/header";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { addMoney, getTopup } from "../api";
+import { addMoney, getDumpUrl, getTopup } from "../api";
 import { UserType } from "../types/user";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { TopupDetails } from "../types/topup";
 import Decimal from "decimal.js";
 import { UserContext } from "../UserProvider";
+import Download from "@mui/icons-material/Download";
 
 export default function AdminPage() {
   const [topup, setTopup] = useState<TopupDetails | null>(null);
@@ -54,6 +55,16 @@ export default function AdminPage() {
         }}
       >
         <Typography variant="body1">Administration</Typography>
+        <Button
+          variant="contained"
+          size="large"
+          startIcon={<Download />}
+          onClick={() => {
+            window.open(getDumpUrl());
+          }}
+        >
+          Database Dump
+        </Button>
         <Button
           variant="contained"
           size="large"

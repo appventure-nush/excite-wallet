@@ -134,6 +134,21 @@ export default function StudentMainPage() {
             Input the amount you want to pay, then press "Make Payment".
           </Typography>
         </Stack>
+
+        <Stack direction={"row"} spacing={2}>
+          <Button
+            variant="contained"
+            onClick={() => navigate("/student/transactions")}
+          >
+            Past Transactions
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => navigate("/student/topups")}
+          >
+            Past Topups
+          </Button>
+        </Stack>
       </Stack>
     </Container>
   );

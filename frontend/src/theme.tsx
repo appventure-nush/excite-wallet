@@ -51,6 +51,14 @@ const theme = createTheme({
               },
             },
             {
+              props: { variant: "body2" },
+              style: {
+                fontSize: "1.2rem",
+                textAlign: "center",
+                fontStyle: "italic",
+              },
+            },
+            {
               props: { variant: "h3" },
               style: {
                 fontSize: "4rem",

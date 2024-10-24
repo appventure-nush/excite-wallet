@@ -6,6 +6,11 @@ export type TransactionDetails = {
   transaction_id: string;
   status: string;
   amount: string;
-  start_timestamp: Date;
   name: string;
+};
+
+export type TransactionHistoryDetails = {
+  name: string;
+  completed_timestamp: Date;
+  amount: string;
 };

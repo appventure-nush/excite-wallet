@@ -90,7 +90,6 @@ export default function LoginPage() {
             const resp = await login(username.current, password.current);
             if (resp) {
               await updateUser();
-              window.location.reload();
             } else {
               alert("Login failed");
             }

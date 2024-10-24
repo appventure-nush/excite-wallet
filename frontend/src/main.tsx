@@ -21,6 +21,7 @@ import BoothMainPage from "./routes/booth_main_view";
 import BoothConfirmPaymentPage from "./routes/booth_confirm_payment_view";
 import AdminPage from "./routes/admin_view";
 import UserProvider from "./UserProvider";
+import StudentTransactionPage from "./routes/student_transactions_view";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,14 @@ const router = createBrowserRouter([
       {
         path: "/student/payment",
         element: <StudentPaymentPage />,
+      },
+      {
+        path: "/student/transactions",
+        element: <StudentTransactionPage />,
+      },
+      {
+        path: "/student/topups",
+        element: <StudentTopupPage />,
       },
       {
         path: "/booth",

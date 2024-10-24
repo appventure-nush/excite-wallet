@@ -1,8 +1,12 @@
 import axios from "axios";
 import { settings } from "./settings";
 import { UserDetails } from "./types/user";
-import { TopupDetails, TopupToken } from "./types/topup";
-import { TransactionDetails, TransactionToken } from "./types/transaction";
+import { TopupDetails, TopupHistoryDetails, TopupToken } from "./types/topup";
+import {
+  TransactionDetails,
+  TransactionHistoryDetails,
+  TransactionToken,
+} from "./types/transaction";
 
 const fetcher = axios.create({
   withCredentials: true,
@@ -11,6 +15,10 @@ const fetcher = axios.create({
 
 export function getMSLoginUrl() {
   return `${settings.BACKEND_URL}/ms`;
+}
+
+export function getDumpUrl() {
+  return `${settings.BACKEND_URL}/admin/dump`;
 }
 
 export async function getUser(): Promise<UserDetails | null> {
@@ -132,5 +140,28 @@ export async function addMoney(
     return true;
   } catch (error) {
     return false;
+  }
+}
+
+export async function getTransactionHistory(): Promise<
+  TransactionHistoryDetails[] | null
+> {
+  try {
+    const resp = await fetcher.get("/student/getTransactions");
+    return resp.data.map((obj: Record<string, string>) => ({
+      ...obj,
+      completed_timestamp: new Date(obj.completed_timestamp),
+    })) as TransactionHistoryDetails[];
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function getTopupHistory(): Promise<TopupHistoryDetails[] | null> {
+  try {
+    const resp = await fetcher.get("/student/getTopups");
+    return resp.data as TopupHistoryDetails[];
+  } catch (error) {
+    return null;
   }
 }

@@ -12,7 +12,15 @@ export default function Header() {
     <Stack
       direction="row"
       spacing={2}
-      sx={{ p: 2, justifyContent: "space-between", alignItems: "center" }}
+      sx={{
+        p: 2,
+        justifyContent: "space-between",
+        alignItems: "center",
+        position: "sticky",
+        top: 0,
+        zIndex: 1000,
+        backgroundColor: "#121212",
+      }}
     >
       <Typography variant="h5">NUSHPay</Typography>
       <Button

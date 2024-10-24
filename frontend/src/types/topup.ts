@@ -7,3 +7,8 @@ export type TopupDetails = {
   student_uid: string;
   student_name: string;
 };
+
+export type TopupHistoryDetails = {
+  lucky_draw_code: string;
+  amount: string;
+};

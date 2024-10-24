@@ -5,7 +5,6 @@ import { TopupTable } from "types/topup"
 import { TransactionTable } from "types/transaction"
 import { UserTable, UserType } from "types/user"
 import Archiver from "archiver"
-import ObjectsToCsv from "objects-to-csv"
 import { objectsToCsv } from "utils"
 
 const router = Router()
@@ -122,6 +121,30 @@ router.get("/dump", async (_, res) => {
         SELECT * FROM Users
     `
 
+    const topupHeaders = (
+        await sql<{ column_name: string }[]>`
+        SELECT column_name
+        FROM information_schema.columns
+        WHERE table_name = 'topup'
+    `
+    ).map((row) => row.column_name)
+
+    const transactionHeaders = (
+        await sql<{ column_name: string }[]>`
+        SELECT column_name
+        FROM information_schema.columns
+        WHERE table_name = 'transactions'
+    `
+    ).map((row) => row.column_name)
+
+    const userHeaders = (
+        await sql<{ column_name: string }[]>`
+        SELECT column_name
+        FROM information_schema.columns
+        WHERE table_name = 'users'
+    `
+    ).map((row) => row.column_name)
+
     res.writeHead(200, {
         "Content-Type": "application/zip",
         "Content-Disposition": `attachment; filename=dump-${new Date().toISOString()}.zip`,
@@ -131,13 +154,13 @@ router.get("/dump", async (_, res) => {
     archive.pipe(res)
 
     await archive
-        .append(objectsToCsv(topups), {
+        .append(objectsToCsv(topups, topupHeaders), {
             name: "topups.csv",
         })
-        .append(objectsToCsv(transactions), {
+        .append(objectsToCsv(transactions, transactionHeaders), {
             name: "transactions.csv",
         })
-        .append(objectsToCsv(users), {
+        .append(objectsToCsv(users, userHeaders), {
             name: "users.csv",
         })
         .finalize()

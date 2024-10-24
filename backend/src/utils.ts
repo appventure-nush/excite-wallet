@@ -18,12 +18,14 @@ export async function getUser(id: string): Promise<UserDetails> {
     }
 }
 
-export function objectsToCsv(data: Record<string, unknown>[]): string {
-    const keys = Object.keys(data[0])
-    const csv = [keys.join(",")]
+export function objectsToCsv(
+    data: Record<string, unknown>[],
+    headers: string[],
+): string {
+    const csv = [headers.join(",")]
 
     for (const row of data) {
-        csv.push(keys.map((key) => row[key]).join(","))
+        csv.push(headers.map((key) => row[key]).join(","))
     }
 
     return csv.join("\n")
