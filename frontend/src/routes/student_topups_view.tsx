@@ -63,7 +63,7 @@ export default function StudentTopupHistoryPage() {
                   ${new Decimal(topup.amount).toFixed(2)}
                 </Typography>
                 <Typography variant="body1">
-                  Lucky draw code: {topup.lucky_draw_code}
+                  Code: {topup.lucky_draw_code}
                 </Typography>
               </CardContent>
             </Card>
