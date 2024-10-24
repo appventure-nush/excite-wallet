@@ -1,4 +1,4 @@
-import { Container, Stack, Typography, Card, CardContent } from "@mui/material";
+import { Container, Stack, Typography, Card, CardContent, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/header";
 import { useContext, useEffect, useState } from "react";
@@ -45,6 +45,15 @@ export default function StudentTopupHistoryPage() {
           alignItems: "center",
         }}
       >
+        <Button
+          variant="outlined"
+          color="white"
+          onClick={() => {
+            navigate("/student");
+          }}
+        >
+          Back
+        </Button>
         <Typography variant="body1">Topup History</Typography>
         {topupDetails.length > 0 ? (
           topupDetails.map((topup, idx) => (

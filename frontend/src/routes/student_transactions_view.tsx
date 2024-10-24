@@ -1,4 +1,4 @@
-import { Container, Stack, Typography, Card, CardContent } from "@mui/material";
+import { Container, Stack, Typography, Card, CardContent, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/header";
 import { useContext, useEffect, useState } from "react";
@@ -45,6 +45,15 @@ export default function StudentTransactionHistoryPage() {
           alignItems: "center",
         }}
       >
+        <Button
+          variant="outlined"
+          color="white"
+          onClick={() => {
+            navigate("/student");
+          }}
+        >
+          Back
+        </Button>
         <Typography variant="body1">Transaction History</Typography>
         {transactionDetails.length > 0 ? (
           transactionDetails.map((transaction, idx) => (
