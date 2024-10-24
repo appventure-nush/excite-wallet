@@ -2,7 +2,10 @@ import { sql } from "db"
 import Decimal from "decimal.js"
 import { Router } from "express"
 import { TopupTable } from "types/topup"
-import { UserType } from "types/user"
+import { TransactionTable } from "types/transaction"
+import { UserTable, UserType } from "types/user"
+import Archiver from "archiver"
+import ObjectsToCsv from "objects-to-csv"
 
 const router = Router()
 router.use((req, res, next) => {
@@ -105,6 +108,38 @@ router.post("/addMoney", async (req, res) => {
 
         res.json({ message: "Money added" })
     })
+})
+
+router.get("/dump", async (req, res) => {
+    const topups = await sql<TopupTable[]>`
+        SELECT * FROM Topup
+    `
+    const transactions = await sql<TransactionTable[]>`
+        SELECT * FROM Transactions
+    `
+    const users = await sql<UserTable[]>`
+        SELECT * FROM Users
+    `
+
+    res.writeHead(200, {
+        "Content-Type": "application/zip",
+        "Content-Disposition": `attachment; filename=dump-${new Date().toISOString()}.zip`,
+    })
+
+    const archive = Archiver("zip")
+    archive.pipe(res)
+
+    await archive
+        .append(await new ObjectsToCsv(topups).toString(true, true), {
+            name: "topups.csv",
+        })
+        .append(await new ObjectsToCsv(transactions).toString(true, true), {
+            name: "transactions.csv",
+        })
+        .append(await new ObjectsToCsv(users).toString(true, true), {
+            name: "users.csv",
+        })
+        .finalize()
 })
 
 export default router

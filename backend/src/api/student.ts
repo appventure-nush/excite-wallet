@@ -162,4 +162,24 @@ router.post("/cancelToken", async (req, res) => {
     }
 })
 
+router.get("/getTransactions", async (req, res) => {
+    const transactions = await sql<
+        { name: string; completed_timestamp: Date; amount: string }[]
+    >`
+        SELECT Transactions.completed_timestamp, Transactions.amount, Users.name FROM Transactions INNER JOIN Users ON Users.uid = Transactions.receiver_uid WHERE sender_uid = ${
+            req.user!.uid
+        } AND status = 'COMPLETED'
+    `
+    res.json(transactions)
+})
+
+router.get("/getTopups", async (req, res) => {
+    const topups = await sql<{ lucky_draw_code: string; amount: string }[]>`
+        SELECT Topup.amount, Topup.lucky_draw_code FROM Topup WHERE student_uid = ${
+            req.user!.uid
+        } AND admin_uid IS NOT NULL
+    `
+    res.json(topups)
+})
+
 export default router
