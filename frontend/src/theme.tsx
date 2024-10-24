@@ -18,6 +18,14 @@ declare module "@mui/material/Button" {
   }
 }
 
+declare module '@mui/material/Typography' {
+  interface TypographyPropsVariantOverrides {
+    body1: true;
+    italic1: true;
+    h3: true;
+  }
+}
+
 // A custom theme for this app
 const theme = createTheme({
   palette: {
@@ -51,7 +59,7 @@ const theme = createTheme({
               },
             },
             {
-              props: { variant: "body2" },
+              props: { variant: "italic1" },
               style: {
                 fontSize: "1.2rem",
                 textAlign: "center",

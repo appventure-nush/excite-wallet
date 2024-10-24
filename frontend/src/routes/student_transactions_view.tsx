@@ -61,7 +61,7 @@ export default function StudentTransactionPage() {
             </Card>
           ))
         ) : (
-          <Typography variant="body2">No transactions yet</Typography>
+          <Typography variant="italic1">No transactions yet</Typography>
         )}
       </Stack>
     </Container>

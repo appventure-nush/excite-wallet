@@ -60,7 +60,7 @@ export default function StudentTopupPage() {
             </Card>
           ))
         ) : (
-          <Typography variant="body2">No topups yet</Typography>
+          <Typography variant="italic1">No topups yet</Typography>
         )}
       </Stack>
     </Container>
