@@ -172,7 +172,11 @@ export async function addUser(
   password: string,
 ): Promise<boolean> {
   try {
-    const resp = await fetcher.post("/admin/addUser");
+    await fetcher.post("/admin/addUser", {
+      name,
+      username,
+      password,
+    });
     return true;
   } catch (error) {
     return false;
