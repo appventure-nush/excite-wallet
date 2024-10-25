@@ -1,10 +1,14 @@
 import { sql } from "db"
 import { UserDetails, UserTable, UserType } from "types/user"
 
-export async function getUser(id: string): Promise<UserDetails> {
+export async function getUser(id: string): Promise<UserDetails | null> {
     const data = await sql<UserTable[]>`
         SELECT * FROM Users WHERE uid = ${id}
     `
+    
+    if (data.length === 0) {
+        return null
+    }
 
     return {
         username: data[0].username,
