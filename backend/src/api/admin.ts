@@ -171,7 +171,7 @@ router.get("/dump", async (_, res) => {
 router.post("/addUser", async (req, res) => {
     const name: unknown = req.body.name
     const username: unknown = req.body.username
-    const password: unknown = req.body.email
+    const password: unknown = req.body.password
 
     if (!name) {
         return res.status(400).json({ message: "Name is required" })
