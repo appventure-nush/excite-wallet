@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { settings } from "./settings";
 import { UserDetails } from "./types/user";
 import { TopupDetails, TopupHistoryDetails, TopupToken } from "./types/topup";
@@ -26,6 +26,11 @@ export async function getUser(): Promise<UserDetails | null> {
     const resp = await fetcher.get("/me");
     return resp.data as UserDetails;
   } catch (error) {
+    if ((error as AxiosError).response?.status === 500) {
+      // user probably got deleted
+      await logout();
+      return null;
+    }
     return null;
   }
 }
