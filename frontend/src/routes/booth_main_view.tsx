@@ -46,6 +46,12 @@ export default function BoothMainPage() {
         <Typography variant="h6">Your balance:</Typography>
         <Typography variant="h3">${user.balance}</Typography>
         <Button
+            variant="contained"
+            onClick={() => navigate("/booth/transactions")}
+          >
+            Past Transactions
+          </Button>
+        <Button
           variant="contained"
           size="large"
           startIcon={!showScanner && <QrCodeScannerIcon />}
