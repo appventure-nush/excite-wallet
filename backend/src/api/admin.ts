@@ -6,6 +6,7 @@ import { TransactionTable } from "types/transaction"
 import { UserTable, UserType } from "types/user"
 import Archiver from "archiver"
 import { objectsToCsv } from "utils"
+import { getRandom } from "getRandom"
 
 const router = Router()
 router.use((req, res, next) => {
@@ -164,6 +165,44 @@ router.get("/dump", async (_, res) => {
             name: "users.csv",
         })
         .finalize()
+})
+
+router.post("/addUser", async (req, res) => {
+    const name: unknown = req.body.name
+    const username: unknown = req.body.username
+    const password: unknown = req.body.email
+
+    if (!name) {
+        return res.status(400).json({ message: "Name is required" })
+    }
+
+    if (typeof name !== "string") {
+        return res.status(400).json({ message: "Name must be a string" })
+    }
+
+    if (!username) {
+        return res.status(400).json({ message: "Username is required" })
+    }
+
+    if (typeof username !== "string") {
+        return res.status(400).json({ message: "Username must be a string" })
+    }
+
+    if (!password) {
+        return res.status(400).json({ message: "Password is required" })
+    }
+
+    if (typeof password !== "string") {
+        return res.status(400).json({ message: "Password must be a string" })
+    }
+
+    // add user
+    await sql`
+        INSERT INTO Users (uid, name, username, password, is_admin, is_booth, balance)
+        VALUES (${getRandom()}, ${name}, ${username}, ${password}, FALSE, TRUE, 0)
+    `
+
+    res.json({ message: "User added" })
 })
 
 export default router

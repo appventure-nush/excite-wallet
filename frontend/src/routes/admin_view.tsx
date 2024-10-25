@@ -68,6 +68,15 @@ export default function AdminPage() {
         <Button
           variant="contained"
           size="large"
+          onClick={() => {
+            navigate("/admin/add");
+          }}
+        >
+          Add Account
+        </Button>
+        <Button
+          variant="contained"
+          size="large"
           startIcon={!showScanner && <QrCodeScannerIcon />}
           onClick={() => {
             if (showScanner) {

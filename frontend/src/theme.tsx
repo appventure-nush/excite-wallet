@@ -18,7 +18,7 @@ declare module "@mui/material/Button" {
   }
 }
 
-declare module '@mui/material/Typography' {
+declare module "@mui/material/Typography" {
   interface TypographyPropsVariantOverrides {
     italic1: true;
   }

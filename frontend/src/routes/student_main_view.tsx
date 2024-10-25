@@ -113,7 +113,7 @@ export default function StudentMainPage() {
                 return;
               }
               navigate("/student/payment", {
-                state: { amount: amt.toFixed(2) },
+                state: { amount: amt.toFixed(2), time: new Date() },
               });
             }}
           >

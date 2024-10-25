@@ -23,6 +23,7 @@ import AdminPage from "./routes/admin_view";
 import UserProvider from "./UserProvider";
 import StudentTransactionHistoryPage from "./routes/student_transactions_view";
 import StudentTopupHistoryPage from "./routes/student_topups_view";
+import AdminAddPage from "./routes/admin_add_account";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
       {
         path: "/admin",
         element: <AdminPage />,
+      },
+      {
+        path: "/admin/add",
+        element: <AdminAddPage />,
       },
     ],
   },

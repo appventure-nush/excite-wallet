@@ -14,9 +14,15 @@ export default function StudentPaymentPage() {
   const { user } = useContext(UserContext);
   const [token, setToken] = useState<TransactionToken | null>(null);
   const amount: string | undefined = location.state.amount;
+  const time: Date | undefined = location.state.time;
 
   useEffect(() => {
     if (!amount) {
+      navigate("/student");
+      return;
+    }
+    if (!time || new Date().getTime() - time.getTime() > 10000) {
+      // invalid
       navigate("/student");
       return;
     }

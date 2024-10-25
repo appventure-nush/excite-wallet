@@ -165,3 +165,16 @@ export async function getTopupHistory(): Promise<TopupHistoryDetails[] | null> {
     return null;
   }
 }
+
+export async function addUser(
+  name: string,
+  username: string,
+  password: string,
+): Promise<boolean> {
+  try {
+    const resp = await fetcher.post("/admin/addUser");
+    return true;
+  } catch (error) {
+    return false;
+  }
+}

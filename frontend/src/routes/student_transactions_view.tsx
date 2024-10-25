@@ -1,4 +1,11 @@
-import { Container, Stack, Typography, Card, CardContent, Button } from "@mui/material";
+import {
+  Container,
+  Stack,
+  Typography,
+  Card,
+  CardContent,
+  Button,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/header";
 import { useContext, useEffect, useState } from "react";
@@ -57,7 +64,11 @@ export default function StudentTransactionHistoryPage() {
         <Typography variant="body1">Transaction History</Typography>
         {transactionDetails.length > 0 ? (
           transactionDetails.map((transaction, idx) => (
-            <Card variant="outlined" key={idx} sx={{ width: "100%", borderColor: "#ffffff" }}>
+            <Card
+              variant="outlined"
+              key={idx}
+              sx={{ width: "100%", borderColor: "#ffffff" }}
+            >
               <CardContent>
                 <Typography variant="h5">
                   ${new Decimal(transaction.amount).toFixed(2)}
