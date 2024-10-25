@@ -134,6 +134,7 @@ router.post("/createToken", async (req, res) => {
         admin_uid: null,
         admin_name: null,
         amount: null,
+        completed_timestamp: null,
     }
     await sql`INSERT INTO Topup ${sql(topup)}`
     res.json({ topup_id: topupId })
@@ -175,7 +176,7 @@ router.get("/getTransactions", async (req, res) => {
 
 router.get("/getTopups", async (req, res) => {
     const topups = await sql<{ lucky_draw_code: string; amount: string }[]>`
-        SELECT Topup.amount, Topup.lucky_draw_code FROM Topup WHERE student_uid = ${
+        SELECT Topup.amount, Topup.lucky_draw_code, Topup.completed_timestamp FROM Topup WHERE student_uid = ${
             req.user!.uid
         } AND admin_uid IS NOT NULL
     `

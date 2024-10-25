@@ -95,6 +95,7 @@ router.post("/addMoney", async (req, res) => {
         topupRow.admin_uid = req.user!.uid
         topupRow.admin_name = req.user!.name
         topupRow.amount = amountToDP.toFixed(2)
+        topupRow.completed_timestamp = new Date()
 
         await sql`
             UPDATE Users

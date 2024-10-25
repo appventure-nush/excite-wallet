@@ -28,5 +28,6 @@ CREATE TABLE Topup(
     admin_uid CHAR(36),
     admin_name VARCHAR(255),
     amount DECIMAL(10, 2),
+    completed_timestamp TIMESTAMP,
     lucky_draw_code CHAR(13) DEFAULT 'EXCITE-' || LPAD(NEXTVAL('LuckyDrawCodeSeq')::TEXT, 6, '0') NOT NULL
 );

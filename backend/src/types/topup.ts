@@ -6,6 +6,7 @@ export type TopupTable = {
     admin_name: string | null // VARCHAR(255)
     amount: string | null // DECIMAL(10, 2)
     lucky_draw_code: string // CHAR(13)
+    completed_timestamp: Date | null // TIMESTAMP
 }
 
 export interface TopupTableInsert extends Omit<TopupTable, "lucky_draw_code"> {

@@ -179,7 +179,10 @@ export async function getTransactionHistoryBooth(): Promise<
 export async function getTopupHistory(): Promise<TopupHistoryDetails[] | null> {
   try {
     const resp = await fetcher.get("/student/getTopups");
-    return resp.data as TopupHistoryDetails[];
+    return resp.data.map((obj: Record<string, string>) => ({
+      ...obj,
+      completed_timestamp: new Date(obj.completed_timestamp),
+    })) as TopupHistoryDetails[];
   } catch (error) {
     return null;
   }

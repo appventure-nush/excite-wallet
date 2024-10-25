@@ -76,6 +76,9 @@ export default function StudentTopupHistoryPage() {
                 <Typography variant="body1">
                   Code: {topup.lucky_draw_code}
                 </Typography>
+                <Typography variant="body1">
+                  {topup.completed_timestamp.toLocaleString()}
+                </Typography>
               </CardContent>
             </Card>
           ))
