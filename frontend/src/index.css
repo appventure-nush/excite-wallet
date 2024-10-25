@@ -29,3 +29,7 @@
   height: 100%;
   width: 100%;
 }
+
+.qr-code {
+  color-scheme: only light;
+}

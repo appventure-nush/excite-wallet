@@ -61,7 +61,7 @@ export default function StudentTopupPage() {
             alignItems: "center",
           }}
         >
-          <QRCode value={token.topup_id} />
+          <QRCode value={token.topup_id} className="qr-code" />
         </Container>
         <Typography variant="h6">How do I top-up?</Typography>
         <Typography variant="body1">
