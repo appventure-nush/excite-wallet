@@ -7,6 +7,7 @@ import { UserTable, UserType } from "types/user"
 import Archiver from "archiver"
 import { objectsToCsv } from "utils"
 import { getRandom } from "getRandom"
+import { hash } from "passwords"
 
 const router = Router()
 router.use((req, res, next) => {
@@ -199,7 +200,7 @@ router.post("/addUser", async (req, res) => {
     // add user
     await sql`
         INSERT INTO Users (uid, name, username, password, is_admin, is_booth, balance)
-        VALUES (${getRandom()}, ${name}, ${username}, ${password}, FALSE, TRUE, 0)
+        VALUES (${getRandom()}, ${name}, ${username}, ${await hash(password)}, FALSE, TRUE, 0)
     `
 
     res.json({ message: "User added" })
