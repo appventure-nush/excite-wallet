@@ -13,9 +13,9 @@ import { UserType } from "../types/user";
 import Decimal from "decimal.js";
 import { UserContext } from "../UserProvider";
 import { TransactionHistoryDetails } from "../types/transaction";
-import { getTransactionHistoryStudent } from "../api";
+import { getTransactionHistoryBooth } from "../api";
 
-export default function StudentTransactionHistoryPage() {
+export default function BoothTransactionHistoryPage() {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [transactionDetails, setTransactionDetails] = useState<
@@ -28,12 +28,12 @@ export default function StudentTransactionHistoryPage() {
     } else if (user === null) {
       return navigate("/");
     } else if (user.type === UserType.STUDENT) {
-      getTransactionHistoryStudent().then(setTransactionDetails);
-      return;
+      navigate("/student");
     } else if (user.type === UserType.ADMIN) {
       navigate("/admin");
     } else if (user.type === UserType.BOOTH) {
-      navigate("/booth");
+      getTransactionHistoryBooth().then(setTransactionDetails);
+      return;
     }
   }, [user]);
 
@@ -56,7 +56,7 @@ export default function StudentTransactionHistoryPage() {
           variant="outlined"
           color="white"
           onClick={() => {
-            navigate("/student");
+            navigate("/booth");
           }}
         >
           Back
@@ -73,7 +73,7 @@ export default function StudentTransactionHistoryPage() {
                 <Typography variant="h5">
                   ${new Decimal(transaction.amount).toFixed(2)}
                 </Typography>
-                <Typography variant="body1">To {transaction.name}</Typography>
+                <Typography variant="body1">From {transaction.name}</Typography>
                 <Typography variant="body1">
                   {transaction.completed_timestamp.toLocaleString()}
                 </Typography>

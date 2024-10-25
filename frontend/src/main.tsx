@@ -24,6 +24,7 @@ import UserProvider from "./UserProvider";
 import StudentTransactionHistoryPage from "./routes/student_transactions_view";
 import StudentTopupHistoryPage from "./routes/student_topups_view";
 import AdminAddPage from "./routes/admin_add_account";
+import BoothTransactionHistoryPage from "./routes/booth_transactions_view";
 
 const router = createBrowserRouter([
   {
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
       {
         path: "/booth",
         element: <BoothMainPage />,
+      },
+      {
+        path: "/booth/transactions",
+        element: <BoothTransactionHistoryPage />,
       },
       {
         path: "/booth/payment",

@@ -134,4 +134,15 @@ router.post("/collectTransaction", async (req, res) => {
     return res.json({ message: "Transaction completed" })
 })
 
+router.get("/getTransactions", async (req, res) => {
+    const transactions = await sql<
+        { name: string; completed_timestamp: Date; amount: string }[]
+    >`
+        SELECT Transactions.completed_timestamp, Transactions.amount, Users.name FROM Transactions INNER JOIN Users ON Users.uid = Transactions.sender_uid WHERE receiver_uid = ${
+            req.user!.uid
+        } AND status = 'COMPLETED'
+    `
+    res.json(transactions)
+})
+
 export default router

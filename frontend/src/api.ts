@@ -143,11 +143,25 @@ export async function addMoney(
   }
 }
 
-export async function getTransactionHistory(): Promise<
+export async function getTransactionHistoryStudent(): Promise<
   TransactionHistoryDetails[] | null
 > {
   try {
     const resp = await fetcher.get("/student/getTransactions");
+    return resp.data.map((obj: Record<string, string>) => ({
+      ...obj,
+      completed_timestamp: new Date(obj.completed_timestamp),
+    })) as TransactionHistoryDetails[];
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function getTransactionHistoryBooth(): Promise<
+  TransactionHistoryDetails[] | null
+> {
+  try {
+    const resp = await fetcher.get("/booth/getTransactions");
     return resp.data.map((obj: Record<string, string>) => ({
       ...obj,
       completed_timestamp: new Date(obj.completed_timestamp),
