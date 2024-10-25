@@ -91,6 +91,7 @@ export default function StudentPaymentPage() {
               justifyContent: "center",
               alignItems: "center",
             }}
+            className="qr-code"
           >
             <QRCode value={token.transaction_id} className="qr-code"/>
           </Container>
