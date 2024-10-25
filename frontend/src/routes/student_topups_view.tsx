@@ -57,7 +57,7 @@ export default function StudentTopupHistoryPage() {
         <Typography variant="body1">Topup History</Typography>
         {topupDetails.length > 0 ? (
           topupDetails.map((topup, idx) => (
-            <Card variant="outlined" key={idx}>
+            <Card variant="outlined" key={idx} sx={{ width: "100%", borderColor: "#ffffff" }}>
               <CardContent>
                 <Typography variant="h5">
                   ${new Decimal(topup.amount).toFixed(2)}

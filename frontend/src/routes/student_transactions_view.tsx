@@ -57,7 +57,7 @@ export default function StudentTransactionHistoryPage() {
         <Typography variant="body1">Transaction History</Typography>
         {transactionDetails.length > 0 ? (
           transactionDetails.map((transaction, idx) => (
-            <Card variant="outlined" key={idx}>
+            <Card variant="outlined" key={idx} sx={{ width: "100%", borderColor: "#ffffff" }}>
               <CardContent>
                 <Typography variant="h5">
                   ${new Decimal(transaction.amount).toFixed(2)}
