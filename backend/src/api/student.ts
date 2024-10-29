@@ -29,6 +29,11 @@ router.post("/createTransaction", async (req, res) => {
     }
 
     const amountToDP = new Decimal(amount).toDP(2)
+
+    if (amountToDP.lte(0)) {
+        return res.status(400).json({ message: "Amount must be positive" })
+    }
+
     const transId = getRandom()
 
     // create a transaction
