@@ -33,6 +33,9 @@ router.post("/createTransaction", async (req, res) => {
     if (amountToDP.lte(0)) {
         return res.status(400).json({ message: "Amount must be positive" })
     }
+    if (!amountToDP.isFinite()) {
+        return res.status(400).json({ message: "Invalid Amount" })
+    }
 
     const transId = getRandom()
 
