@@ -14,6 +14,7 @@ import { cancelTransactionToken } from "../api";
 import { UserType } from "../types/user";
 import Decimal from "decimal.js";
 import { UserContext } from "../UserProvider";
+import { MenuBook } from "@mui/icons-material";
 
 export default function StudentMainPage() {
   const navigate = useNavigate();
@@ -64,6 +65,11 @@ export default function StudentMainPage() {
           <Typography variant="body1">Welcome, {user.name}!</Typography>
           <Typography variant="h6">Your balance:</Typography>
           <Typography variant="h3">${user.balance}</Typography>
+          <Link to={"https://tinyurl.com/excitebooklet24"} style={{ color: "#FFFFFF" }}>
+            <Button variant="contained" startIcon={<MenuBook/>}>
+              EXCITE Booklet
+            </Button>
+          </Link>
           <Link to={"/student/topup"} style={{ color: "#FFFFFF" }}>
             <Button variant="outlined" color="white">
               Top-up Balance
