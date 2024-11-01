@@ -73,11 +73,13 @@ router.post("/addMoney", async (req, res) => {
         return res.status(400).json({ message: "Amount must be a string" })
     }
 
-    if (Number(amount) <= 0) {
+    const amountToDP = new Decimal(amount).toDP(2)
+
+    if (amountToDP.lte(0)) {
         return res.status(400).json({ message: "Amount must be positive" })
     }
 
-    if (!isFinite(Number(amount))) {
+    if (!amountToDP.isFinite()) {
         return res.status(400).json({ message: "No scamming" })
     }
 
@@ -96,8 +98,6 @@ router.post("/addMoney", async (req, res) => {
         if (topupRow.admin_uid !== null) {
             return res.status(400).json({ message: "Token ID already used" })
         }
-
-        const amountToDP = new Decimal(amount).toDP(2)
 
         // update topup data
         topupRow.admin_uid = req.user!.uid
