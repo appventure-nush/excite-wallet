@@ -73,11 +73,11 @@ router.post("/addMoney", async (req, res) => {
         return res.status(400).json({ message: "Amount must be a string" })
     }
 
-    if (amount.lte(0)) {
+    if (Number(amount) <= 0) {
         return res.status(400).json({ message: "Amount must be positive" })
     }
 
-    if (!amount.isFinite()) {
+    if (!isFinite(Number(amount))) {
         return res.status(400).json({ message: "No scamming" })
     }
 
