@@ -26,11 +26,11 @@ export function objectsToCsv(
     data: Record<string, unknown>[],
     headers: string[],
 ): string {
-    const csv = [headers.join(",")]
+    const tsv = [headers.join("\t")]
 
     for (const row of data) {
-        csv.push(headers.map((key) => row[key]).join(","))
+        tsv.push(headers.map((key) => row[key]).join("\t"))
     }
 
-    return csv.join("\n")
+    return tsv.join("\n")
 }

@@ -5,7 +5,7 @@ import { TopupTable } from "types/topup"
 import { TransactionTable } from "types/transaction"
 import { UserTable, UserType } from "types/user"
 import Archiver from "archiver"
-import { objectsToCsv } from "utils"
+import { objectsToCsv as objectsToTsv } from "utils"
 import { getRandom } from "getRandom"
 import { hash } from "passwords"
 
@@ -165,14 +165,14 @@ router.get("/dump", async (_, res) => {
     archive.pipe(res)
 
     await archive
-        .append(objectsToCsv(topups, topupHeaders), {
-            name: "topups.csv",
+        .append(objectsToTsv(topups, topupHeaders), {
+            name: "topups.tsv",
         })
-        .append(objectsToCsv(transactions, transactionHeaders), {
-            name: "transactions.csv",
+        .append(objectsToTsv(transactions, transactionHeaders), {
+            name: "transactions.tsv",
         })
-        .append(objectsToCsv(users, userHeaders), {
-            name: "users.csv",
+        .append(objectsToTsv(users, userHeaders), {
+            name: "users.tsv",
         })
         .finalize()
 })
