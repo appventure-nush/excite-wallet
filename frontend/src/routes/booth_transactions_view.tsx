@@ -32,7 +32,9 @@ export default function BoothTransactionHistoryPage() {
     } else if (user.type === UserType.ADMIN) {
       navigate("/admin");
     } else if (user.type === UserType.BOOTH) {
-      getTransactionHistoryBooth().then(setTransactionDetails);
+      getTransactionHistoryBooth().then((data) =>
+        setTransactionDetails(data ? [...data].reverse() : data)
+      );
       return;
     }
   }, [user]);

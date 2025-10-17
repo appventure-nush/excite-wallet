@@ -28,7 +28,10 @@ export default function StudentTopupHistoryPage() {
     } else if (user === null) {
       return navigate("/");
     } else if (user.type === UserType.STUDENT) {
-      getTopupHistory().then(setTopupDetails);
+      // reverse the fetched array before saving to state
+      getTopupHistory().then((data) =>
+        setTopupDetails(data ? [...data].reverse() : data)
+      );
       return;
     } else if (user.type === UserType.ADMIN) {
       navigate("/admin");

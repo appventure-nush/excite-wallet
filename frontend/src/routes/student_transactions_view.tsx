@@ -28,7 +28,10 @@ export default function StudentTransactionHistoryPage() {
     } else if (user === null) {
       return navigate("/");
     } else if (user.type === UserType.STUDENT) {
-      getTransactionHistoryStudent().then(setTransactionDetails);
+      // reverse the fetched array before saving to state
+      getTransactionHistoryStudent().then((data) =>
+        setTransactionDetails(data ? [...data].reverse() : data)
+      );
       return;
     } else if (user.type === UserType.ADMIN) {
       navigate("/admin");
