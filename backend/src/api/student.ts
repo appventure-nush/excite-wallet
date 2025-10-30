@@ -191,4 +191,12 @@ router.get("/getTopups", async (req, res) => {
     res.json(topups)
 })
 
+router.get("/getAnnouncements", async (req, res) => {
+    const rows = await sql<{ content: string }[]>`
+        SELECT content FROM Announcements WHERE visible = TRUE ORDER BY created_timestamp DESC
+    `
+    const announcements: string[] = rows.map(r => r.content)
+    res.json(announcements)
+})
+
 export default router

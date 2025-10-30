@@ -25,6 +25,7 @@ import StudentTransactionHistoryPage from "./routes/student_transactions_view";
 import StudentTopupHistoryPage from "./routes/student_topups_view";
 import AdminAddPage from "./routes/admin_add_account";
 import BoothTransactionHistoryPage from "./routes/booth_transactions_view";
+import AdminAddAnnouncementPage from "./routes/admin_announcements_view";
 
 const router = createBrowserRouter([
   {
@@ -80,6 +81,10 @@ const router = createBrowserRouter([
         path: "/admin/add",
         element: <AdminAddPage />,
       },
+      {
+        path: "/admin/addAnnouncement",
+        element: <AdminAddAnnouncementPage />,
+      }
     ],
   },
 ]);

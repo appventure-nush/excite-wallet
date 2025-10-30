@@ -6,11 +6,12 @@ import {
   Divider,
   TextField,
   InputAdornment,
+  Alert,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/header";
-import { useContext, useEffect, useRef } from "react";
-import { cancelTransactionToken } from "../api";
+import { useContext, useEffect, useRef, useState } from "react";
+import { cancelTransactionToken, getAnnouncements } from "../api";
 import { UserType } from "../types/user";
 import Decimal from "decimal.js";
 import { UserContext } from "../UserProvider";
@@ -20,6 +21,7 @@ export default function StudentMainPage() {
   const navigate = useNavigate();
   const { user, updateUser } = useContext(UserContext);
   const amount = useRef<string>("0");
+  const [announcements, setAnnouncements] = useState<string[]>([]);
 
   useEffect(() => {
     if (user === undefined) {
@@ -30,6 +32,9 @@ export default function StudentMainPage() {
       (async () => {
         await cancelTransactionToken();
         await updateUser();
+        await getAnnouncements().then((anns) => {
+          setAnnouncements(anns? anns : []);
+        });
       })();
       return;
     } else if (user.type === UserType.ADMIN) {
@@ -54,6 +59,20 @@ export default function StudentMainPage() {
           alignItems: "center",
         }}
       >
+        <Stack
+          direction="column"
+          spacing={1}
+          sx={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {announcements.map((ann, idx) => (
+            <Alert severity="info" key={idx} sx={{ width: "100%" }}>
+              {ann}
+            </Alert>
+          ))}
+        </Stack>
         <Stack
           direction="column"
           spacing={2}

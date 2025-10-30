@@ -204,3 +204,26 @@ export async function addUser(
     return false;
   }
 }
+
+export async function addAnnouncement(
+  content: string,
+): Promise<boolean> {
+  try {
+    await fetcher.post("/admin/addAnnouncement", {
+      content,
+    });
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+export async function getAnnouncements(): Promise<string[] | null> {
+  try {
+    const resp = await fetcher.get("/student/getAnnouncements");
+    console.log(resp.data as string[])
+    return resp.data as string[];    
+  } catch (error) {
+    return null;
+  }
+}

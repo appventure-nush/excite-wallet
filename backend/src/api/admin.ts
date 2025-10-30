@@ -215,4 +215,28 @@ router.post("/addUser", async (req, res) => {
     res.json({ message: "User added" })
 })
 
+router.post("/addAnnouncement", async (req, res) => {
+    const content: unknown = req.body.content
+
+    if (!content) {
+        return res.status(400).json({ message: "content is required" })
+    }
+
+    if (typeof content !== "string") {
+        return res.status(400).json({ message: "content must be a string" })
+    }
+
+    if (content.length === 0 || content.length > 255) {
+        return res.status(400).json({ message: "content must be between 1 and 255 characters" })
+    }
+
+    // add announcement
+    await sql`
+        INSERT INTO Announcements (announcement_id, content)
+        VALUES (${getRandom()}, ${content})
+    `
+
+    res.json({ message: "Announcement added" })
+})
+
 export default router

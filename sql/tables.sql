@@ -31,3 +31,10 @@ CREATE TABLE Topup(
     completed_timestamp TIMESTAMP,
     lucky_draw_code CHAR(13) DEFAULT 'EXCITE-' || LPAD(NEXTVAL('LuckyDrawCodeSeq')::TEXT, 6, '0') NOT NULL
 );
+
+CREATE TABLE Announcements(
+    announcement_id CHAR(36) PRIMARY KEY,
+    content VARCHAR(255) NOT NULL,
+    created_timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    visible BOOLEAN NOT NULL DEFAULT TRUE
+)
