@@ -1,6 +1,8 @@
 # Replacing Passwords:
 
-Run this code in NodeJS:
+Connect to the database container, and run the command `psql -U admin excite` to log in.
+
+Then, run this code in NodeJS:
 ```js
 const { scrypt, randomBytes } = require("crypto");
 
