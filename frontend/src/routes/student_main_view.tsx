@@ -84,7 +84,7 @@ export default function StudentMainPage() {
           <Typography variant="body1">Welcome, {user.name}!</Typography>
           <Typography variant="h6">Your balance:</Typography>
           <Typography variant="h3">${user.balance}</Typography>
-          <Link to={"https://tinyurl.com/excitebooklet24"} style={{ color: "#FFFFFF" }}>
+          <Link to={"https://publuu.com/flip-book/1005770/2220692"} style={{ color: "#FFFFFF" }}>
             <Button variant="contained" startIcon={<MenuBook/>}>
               EXCITE Booklet
             </Button>
